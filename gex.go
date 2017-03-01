@@ -69,7 +69,15 @@ func main() {
 	planedata[2] = gettilefromfile("ROMs/136043-1119.16s", 0xcfc)
 	planedata[3] = gettilefromfile("ROMs/136043-1119.16s", 0xcfc)
 
-	fmt.Printf("planes work out to: %d\n", planedata)
+	linedata := [4][]byte{}
+	for i := 0; i < 8; i++ {
+		linedata[0] = bytetobits(planedata[0][i])
+		linedata[1] = bytetobits(planedata[1][i])
+		linedata[2] = bytetobits(planedata[2][i])
+		linedata[3] = bytetobits(planedata[3][i])
 
-	fmt.Printf("indexes work out to: %d\n", mergeplanes(planedata))
+		fmt.Printf("tile is: %d\n", mergeplanes(linedata))
+	}
+	//	fmt.Printf("planes work out to: %d\n", planedata)
+	//	fmt.Printf("indexes work out to: %d\n", mergeplanes(planedata))
 }
