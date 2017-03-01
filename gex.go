@@ -14,15 +14,19 @@ func check(e error) {
 	}
 }
 
-func gettilefromfile(file string, bytenum int) TilePlane {
+func gettilefromfile(file string, tilenum int) []byte {
 	f, err := os.Open(file)
 	check(err)
 
 	databytes := make([]byte, 8)
 
-	f.Seek(int64(bytenum), 0)
-	_, err = f.Read(databytes)
+	f.Seek(int64(tilenum*8), 0)
+	cnt, err := f.Read(databytes)
 	check(err)
+
+	if cnt != 8 {
+		panic("failed to read full tile from file")
+	}
 
 	return TilePlane(databytes)
 }
@@ -43,23 +47,29 @@ func bytetobits(databyte byte) []byte {
 	return res
 }
 
+func mergeplanes(planes [4][]byte) []byte {
+	mergedline := []byte{}
+
+	for i := 0; i < 8; i++ {
+		val := (planes[3][i] * byte(math.Pow(2, 3))) + (planes[2][i] * byte(math.Pow(2, 2))) + (planes[1][i] * byte(math.Pow(2, 1))) + (planes[0][i] * byte(math.Pow(2, 0)))
+		mergedline = append(mergedline, val)
+	}
+
+	return mergedline
+}
+
 func main() {
 	// databytes := gettilefromfile("ROMs/136043-1119.16s", 50)
 	// fmt.Printf("byte(s): %02x\n", databytes)
 
-	planes := [4][]byte{}
-	planes[0] = bytetobits(0xFF)
-	planes[1] = bytetobits(0xFF)
-	planes[2] = bytetobits(0xFF)
-	planes[3] = bytetobits(0xFF)
+	planedata := [4][]byte{}
 
-	fmt.Printf("planes work out to: %d\n", planes)
-	indexline := []byte{}
+	planedata[0] = gettilefromfile("ROMs/136043-1119.16s", 0xcfc)
+	planedata[1] = gettilefromfile("ROMs/136043-1119.16s", 0xcfc)
+	planedata[2] = gettilefromfile("ROMs/136043-1119.16s", 0xcfc)
+	planedata[3] = gettilefromfile("ROMs/136043-1119.16s", 0xcfc)
 
-	for i := 0; i < 8; i++ {
-		val := (planes[3][i] * byte(math.Pow(2, 3))) + (planes[2][i] * byte(math.Pow(2, 2))) + (planes[1][i] * byte(math.Pow(2, 1))) + (planes[0][i] * byte(math.Pow(2, 0)))
-		indexline = append(indexline, val)
-	}
+	fmt.Printf("planes work out to: %d\n", planedata)
 
-	fmt.Printf("indexes work out to: %d\n", indexline)
+	fmt.Printf("indexes work out to: %d\n", mergeplanes(planedata))
 }
