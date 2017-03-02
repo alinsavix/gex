@@ -9,6 +9,28 @@ import (
 	"os"
 )
 
+type Color interface {
+	IRGB() (irgb uint16)
+}
+
+type IRGB struct {
+	irgb uint16
+}
+
+func (c IRGB) RGBA() (r, g, b, a uint32) {
+	i := uint32(c.irgb&0xf000) >> 12
+	r = uint32(c.irgb&0x0f00) >> 8 * i
+	g = uint32(c.irgb&0x00f0) >> 4 * i
+	b = uint32(c.irgb&0x000f) * i
+
+	r = r << 8
+	g = g << 8
+	b = b << 8
+	a = 0xffff
+
+	return
+}
+
 type TilePlane []byte
 
 func check(e error) {
@@ -37,12 +59,12 @@ func gettilefromfile(file string, tilenum int) []byte {
 func bytetobits(databyte byte) []byte {
 	res := []byte{}
 
+	// databyte = databyte ^ 0xff
 	for i := 0; i < 8; i++ {
 		if databyte%2 > 0 {
-			// res = append(res, 1) // how do I make these work the other way around?
-			res = append([]byte{1}, res...)
-		} else {
 			res = append([]byte{0}, res...)
+		} else {
+			res = append([]byte{1}, res...)
 		}
 		databyte = databyte >> 1
 	}
@@ -61,48 +83,69 @@ func mergeplanes(planes [4][]byte) []byte {
 	return mergedline
 }
 
+func blanktile() *image.Paletted {
+	rect := image.Rect(0, 0, 8, 8)
+
+	// palette 0 (more or less), for exits and such
+	palette := []color.Color{
+		// IRGB{0x0},
+		color.RGBA{0x0, 0x0, 0x0, 0xff},
+		IRGB{0x7222},
+		IRGB{0x9444},
+		IRGB{0x7753},
+
+		IRGB{0xf421},
+		IRGB{0xb842},
+		IRGB{0x0},
+		//IRGB{0xffff},
+		color.RGBA{0xff, 0xff, 0xff, 0xff},
+		IRGB{0x8421},
+		IRGB{0x7422},
+		IRGB{0x9532},
+		IRGB{0xc532},
+
+		IRGB{0xf422},
+		IRGB{0x7974},
+		IRGB{0xe532},
+		IRGB{0xf643},
+	}
+
+	img := image.NewPaletted(rect, color.Palette(palette))
+	return img
+}
+
 func main() {
 	// databytes := gettilefromfile("ROMs/136043-1119.16s", 50)
 	// fmt.Printf("byte(s): %02x\n", databytes)
 
 	planedata := [4][]byte{}
 
-	planedata[0] = gettilefromfile("ROMs/136043-1119.16s", 0xcfc)
-	planedata[1] = gettilefromfile("ROMs/136043-1119.16s", 0xcfc)
-	planedata[2] = gettilefromfile("ROMs/136043-1119.16s", 0xcfc)
-	planedata[3] = gettilefromfile("ROMs/136043-1119.16s", 0xcfc)
+	planedata[0] = gettilefromfile("ROMs/136043-1111.1a", 0x4fc)
+	planedata[1] = gettilefromfile("ROMs/136043-1113.1l", 0x4fc)
+	planedata[2] = gettilefromfile("ROMs/136043-1115.2a", 0x4fc)
+	planedata[3] = gettilefromfile("ROMs/136043-1117.2l", 0x4fc)
 
-	linedata := [4][]byte{}
+	fulltile := [8][]byte{}
+
 	for i := 0; i < 8; i++ {
+		linedata := [4][]byte{}
 		linedata[0] = bytetobits(planedata[0][i])
 		linedata[1] = bytetobits(planedata[1][i])
 		linedata[2] = bytetobits(planedata[2][i])
 		linedata[3] = bytetobits(planedata[3][i])
 
-		fmt.Printf("tile is: %d\n", mergeplanes(linedata))
+		fulltile[i] = mergeplanes(linedata)
+	}
+	fmt.Printf("tile is: %d\n", fulltile)
+
+	img := blanktile()
+
+	for j := 0; j < 8; j++ {
+		for i := 0; i < 8; i++ {
+			img.SetColorIndex(i, j, fulltile[j][i])
+		}
 	}
 
-	rect := image.Rect(0, 0, 8, 8)
-	palette := []color.Color{
-		color.RGBA{0x00, 0x00, 0x00, 0xff},
-		color.RGBA{0x11, 0x11, 0x11, 0xff},
-		color.RGBA{0x22, 0x22, 0x22, 0xff},
-		color.RGBA{0x33, 0x33, 0x33, 0xff},
-		color.RGBA{0x44, 0x44, 0x44, 0xff},
-		color.RGBA{0x55, 0x55, 0x55, 0xff},
-		color.RGBA{0x66, 0x66, 0x66, 0xff},
-		color.RGBA{0x77, 0x77, 0x77, 0xff},
-		color.RGBA{0x88, 0x88, 0x88, 0xff},
-		color.RGBA{0x99, 0x99, 0x99, 0xff},
-		color.RGBA{0xaa, 0xaa, 0xaa, 0xff},
-		color.RGBA{0xbb, 0xbb, 0xbb, 0xff},
-		color.RGBA{0xcc, 0xcc, 0xcc, 0xff},
-		color.RGBA{0xdd, 0xdd, 0xdd, 0xff},
-		color.RGBA{0xee, 0xee, 0xee, 0xff},
-		color.RGBA{0xff, 0xff, 0xff, 0xff},
-	}
-
-	img := image.NewPaletted(rect, color.Palette(palette))
 	f, _ := os.OpenFile("test.gif", os.O_WRONLY|os.O_CREATE, 0600)
 	defer f.Close()
 
