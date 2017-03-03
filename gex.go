@@ -31,7 +31,13 @@ func (c IRGB) RGBA() (r, g, b, a uint32) {
 	return
 }
 
-type TilePlane []byte
+type TileLinePlane []byte
+
+type TileLinePlaneSet [][]byte
+
+type TileLineMerged []byte
+
+type Tile []TileLineMerged
 
 func check(e error) {
 	if e != nil {
@@ -39,7 +45,7 @@ func check(e error) {
 	}
 }
 
-func gettilefromfile(file string, tilenum int) []byte {
+func gettiledatafromfile(file string, tilenum int) TileLinePlane {
 	f, err := os.Open(file)
 	check(err)
 
@@ -53,11 +59,11 @@ func gettilefromfile(file string, tilenum int) []byte {
 		panic("failed to read full tile from file")
 	}
 
-	return TilePlane(databytes)
+	return databytes
 }
 
 func bytetobits(databyte byte) []byte {
-	res := []byte{}
+	res := make([]byte, 8)
 
 	// databyte = databyte ^ 0xff
 	for i := 0; i < 8; i++ {
@@ -72,8 +78,8 @@ func bytetobits(databyte byte) []byte {
 	return res
 }
 
-func mergeplanes(planes [4][]byte) []byte {
-	mergedline := []byte{}
+func mergeplanes(planes TileLinePlaneSet) TileLineMerged {
+	mergedline := TileLineMerged{}
 
 	for i := 0; i < 8; i++ {
 		val := (planes[3][i] * byte(math.Pow(2, 3))) + (planes[2][i] * byte(math.Pow(2, 2))) + (planes[1][i] * byte(math.Pow(2, 1))) + (planes[0][i] * byte(math.Pow(2, 0)))
@@ -114,28 +120,40 @@ func blanktile() *image.Paletted {
 	return img
 }
 
-func main() {
-	// databytes := gettilefromfile("ROMs/136043-1119.16s", 50)
-	// fmt.Printf("byte(s): %02x\n", databytes)
+func getparsedtile(tilenum int) Tile {
+	planedata := make([]TileLinePlane, 4)
 
-	planedata := [4][]byte{}
+	planedata[0] = gettiledatafromfile("ROMs/136043-1111.1a", tilenum)
+	planedata[1] = gettiledatafromfile("ROMs/136043-1113.1l", tilenum)
+	planedata[2] = gettiledatafromfile("ROMs/136043-1115.2a", tilenum)
+	planedata[3] = gettiledatafromfile("ROMs/136043-1117.2l", tilenum)
+	fmt.Printf("planedata is: %d\n", planedata)
 
-	planedata[0] = gettilefromfile("ROMs/136043-1111.1a", 0x4fc)
-	planedata[1] = gettilefromfile("ROMs/136043-1113.1l", 0x4fc)
-	planedata[2] = gettilefromfile("ROMs/136043-1115.2a", 0x4fc)
-	planedata[3] = gettilefromfile("ROMs/136043-1117.2l", 0x4fc)
+	// fulltile := Tile{}
+	fulltile := make([]TileLineMerged, 8)
 
-	fulltile := [8][]byte{}
-
+	// For each line in tile
 	for i := 0; i < 8; i++ {
-		linedata := [4][]byte{}
+		linedata := make([][]byte, 4)
 		linedata[0] = bytetobits(planedata[0][i])
 		linedata[1] = bytetobits(planedata[1][i])
 		linedata[2] = bytetobits(planedata[2][i])
 		linedata[3] = bytetobits(planedata[3][i])
+		fmt.Printf("line is: %d\n", linedata)
 
 		fulltile[i] = mergeplanes(linedata)
+		fmt.Printf("merged line is: %d", fulltile[i])
 	}
+
+	fmt.Printf("tile is: %d\n", fulltile)
+	return fulltile
+}
+
+func main() {
+	// databytes := gettilefromfile("ROMs/136043-1119.16s", 50)
+	// fmt.Printf("byte(s): %02x\n", databytes)
+
+	fulltile := getparsedtile(0x4fc)
 	fmt.Printf("tile is: %d\n", fulltile)
 
 	img := blanktile()
