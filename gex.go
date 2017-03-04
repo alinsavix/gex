@@ -158,31 +158,26 @@ func writetiletoimage(tile Tile, img *image.Paletted, x int, y int) {
 	}
 }
 
+func genimage(tilenum int, xtiles int, ytiles int) *image.Paletted {
+	img := blankimage(8*xtiles, 8*ytiles)
+
+	tc := 0
+	for y := 0; y < ytiles; y++ {
+		for x := 0; x < xtiles; x++ {
+			tile := getparsedtile(tilenum + tc)
+			writetiletoimage(tile, img, x*8, y*8)
+			tc++
+		}
+	}
+
+	return img
+}
+
 func main() {
 	// databytes := gettilefromfile("ROMs/136043-1119.16s", 50)
 	// fmt.Printf("byte(s): %02x\n", databytes)
 
-	img := blankimage(16, 16)
-
-	fulltile := getparsedtile(0x4fc)
-	writetiletoimage(fulltile, img, 0, 0)
-	// fmt.Printf("tile is: %d\n", fulltile)
-
-	fulltile = getparsedtile(0x4fd)
-	writetiletoimage(fulltile, img, 8, 0)
-
-	fulltile = getparsedtile(0x4fe)
-	writetiletoimage(fulltile, img, 0, 8)
-
-	fulltile = getparsedtile(0x4ff)
-	writetiletoimage(fulltile, img, 8, 8)
-
-	// for j := 0; j < 8; j++ {
-	// 	for i := 0; i < 8; i++ {
-	// 		img.SetColorIndex(i, j, fulltile[j][i])
-	// 	}
-	// }
-
+	img := genimage(0x4fc, 2, 2)
 	f, _ := os.OpenFile("test.gif", os.O_WRONLY|os.O_CREATE, 0600)
 	defer f.Close()
 
