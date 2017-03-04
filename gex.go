@@ -89,8 +89,8 @@ func mergeplanes(planes TileLinePlaneSet) TileLineMerged {
 	return mergedline
 }
 
-func blanktile() *image.Paletted {
-	rect := image.Rect(0, 0, 8, 8)
+func blankimage(x int, y int) *image.Paletted {
+	rect := image.Rect(0, 0, x, y)
 
 	// palette 0 (more or less), for exits and such
 	palette := []color.Color{
@@ -142,27 +142,46 @@ func getparsedtile(tilenum int) Tile {
 		fmt.Printf("line is: %d\n", linedata)
 
 		fulltile[i] = mergeplanes(linedata)
-		fmt.Printf("merged line is: %d", fulltile[i])
+		fmt.Printf("merged line is: %d\n", fulltile[i])
 	}
 
 	fmt.Printf("tile is: %d\n", fulltile)
 	return fulltile
 }
 
+// Write an 8x8 tile into a (usually) larger image
+func writetiletoimage(tile Tile, img *image.Paletted, x int, y int) {
+	for j := 0; j < 8; j++ {
+		for i := 0; i < 8; i++ {
+			img.SetColorIndex(x+i, y+j, tile[j][i])
+		}
+	}
+}
+
 func main() {
 	// databytes := gettilefromfile("ROMs/136043-1119.16s", 50)
 	// fmt.Printf("byte(s): %02x\n", databytes)
 
+	img := blankimage(16, 16)
+
 	fulltile := getparsedtile(0x4fc)
-	fmt.Printf("tile is: %d\n", fulltile)
+	writetiletoimage(fulltile, img, 0, 0)
+	// fmt.Printf("tile is: %d\n", fulltile)
 
-	img := blanktile()
+	fulltile = getparsedtile(0x4fd)
+	writetiletoimage(fulltile, img, 8, 0)
 
-	for j := 0; j < 8; j++ {
-		for i := 0; i < 8; i++ {
-			img.SetColorIndex(i, j, fulltile[j][i])
-		}
-	}
+	fulltile = getparsedtile(0x4fe)
+	writetiletoimage(fulltile, img, 0, 8)
+
+	fulltile = getparsedtile(0x4ff)
+	writetiletoimage(fulltile, img, 8, 8)
+
+	// for j := 0; j < 8; j++ {
+	// 	for i := 0; i < 8; i++ {
+	// 		img.SetColorIndex(i, j, fulltile[j][i])
+	// 	}
+	// }
 
 	f, _ := os.OpenFile("test.gif", os.O_WRONLY|os.O_CREATE, 0600)
 	defer f.Close()
