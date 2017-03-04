@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"image"
 	"image/color"
 	"image/gif"
@@ -93,29 +92,7 @@ func blankimage(x int, y int) *image.Paletted {
 	rect := image.Rect(0, 0, x, y)
 
 	// palette 0 (more or less), for exits and such
-	palette := []color.Color{
-		// IRGB{0x0},
-		color.RGBA{0x0, 0x0, 0x0, 0xff},
-		IRGB{0x7222},
-		IRGB{0x9444},
-		IRGB{0x7753},
-
-		IRGB{0xf421},
-		IRGB{0xb842},
-		IRGB{0x0},
-		//IRGB{0xffff},
-		color.RGBA{0xff, 0xff, 0xff, 0xff},
-		IRGB{0x8421},
-		IRGB{0x7422},
-		IRGB{0x9532},
-		IRGB{0xc532},
-
-		IRGB{0xf422},
-		IRGB{0x7974},
-		IRGB{0xe532},
-		IRGB{0xf643},
-	}
-
+	palette := floorPalettes[0]
 	img := image.NewPaletted(rect, color.Palette(palette))
 	return img
 }
@@ -127,7 +104,7 @@ func getparsedtile(tilenum int) Tile {
 	planedata[1] = gettiledatafromfile("ROMs/136043-1113.1l", tilenum)
 	planedata[2] = gettiledatafromfile("ROMs/136043-1115.2a", tilenum)
 	planedata[3] = gettiledatafromfile("ROMs/136043-1117.2l", tilenum)
-	fmt.Printf("planedata is: %d\n", planedata)
+	// fmt.Printf("planedata is: %d\n", planedata)
 
 	// fulltile := Tile{}
 	fulltile := make([]TileLineMerged, 8)
@@ -139,13 +116,13 @@ func getparsedtile(tilenum int) Tile {
 		linedata[1] = bytetobits(planedata[1][i])
 		linedata[2] = bytetobits(planedata[2][i])
 		linedata[3] = bytetobits(planedata[3][i])
-		fmt.Printf("line is: %d\n", linedata)
+		// fmt.Printf("line is: %d\n", linedata)
 
 		fulltile[i] = mergeplanes(linedata)
-		fmt.Printf("merged line is: %d\n", fulltile[i])
+		// fmt.Printf("merged line is: %d\n", fulltile[i])
 	}
 
-	fmt.Printf("tile is: %d\n", fulltile)
+	// fmt.Printf("tile is: %d\n", fulltile)
 	return fulltile
 }
 
