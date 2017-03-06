@@ -1065,4 +1065,15 @@ var elfPalettes = [][]color.Color{
 		IRGB{0xC0F6}, // 13
 		IRGB{0x6F10}, // 14
 		IRGB{0x4A8F}, // 15
-	}}
+	},
+}
+
+var gauntletPalettes = map[string][][]color.Color{
+	"floor":    floorPalettes,
+	"wall":     wallPalettes,
+	"base":     basePalettes,
+	"warrior":  warriorPalettes,
+	"valkyrie": valkyriePalettes,
+	"wizard":   wizardPalettes,
+	"elf":      elfPalettes,
+}

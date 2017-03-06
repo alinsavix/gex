@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"image"
 	"image/color"
 	"image/gif"
@@ -121,7 +122,7 @@ func blankimage(x int, y int) *image.Paletted {
 	rect := image.Rect(0, 0, x, y)
 
 	// palette 0 (more or less), for exits and such
-	palette := gauntletPalettes["floor"][0]
+	palette := gauntletPalettes[*flagPalType][*flagPalNum]
 	img := image.NewPaletted(rect, color.Palette(palette))
 	return img
 }
@@ -181,12 +182,20 @@ func genimage(tilenum int, xtiles int, ytiles int) *image.Paletted {
 	return img
 }
 
+var flagPalType = flag.String("palettetype", "base", "palette type")
+var flagPalNum = flag.Int("palettenum", 0, "palette number")
+var flagTile = flag.Int("tile", 0xcfc, "tile to render")
+var flagDimX = flag.Int("x", 2, "x width (in tiles)")
+var flagDimY = flag.Int("y", 2, "y height (in tiles)")
+var flagOutput = flag.String("o", "test.gif", "output `filename`")
+
 func main() {
+	flag.Parse()
 	// databytes := gettilefromfile("ROMs/136043-1119.16s", 50)
 	// fmt.Printf("byte(s): %02x\n", databytes)
 
-	img := genimage(0xcfc, 2, 2)
-	f, _ := os.OpenFile("test.gif", os.O_WRONLY|os.O_CREATE, 0600)
+	img := genimage(*flagTile, *flagDimX, *flagDimY)
+	f, _ := os.OpenFile(*flagOutput, os.O_WRONLY|os.O_CREATE, 0600)
 	defer f.Close()
 
 	gif.Encode(f, img, &gif.Options{NumColors: 16})
