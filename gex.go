@@ -121,7 +121,7 @@ func blankimage(x int, y int) *image.Paletted {
 	rect := image.Rect(0, 0, x, y)
 
 	// palette 0 (more or less), for exits and such
-	palette := floorPalettes[0]
+	palette := gauntletPalettes["floor"][0]
 	img := image.NewPaletted(rect, color.Palette(palette))
 	return img
 }
