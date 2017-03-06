@@ -30,6 +30,35 @@ func (c IRGB) RGBA() (r, g, b, a uint32) {
 	return
 }
 
+var romSets = [][]string{
+	{
+		"ROMs/136037-112.1b",
+		"ROMs/136037-114.1mn",
+		"ROMs/136037-116.2b",
+		"ROMs/136037-118.2mn",
+	},
+	{
+		"ROMs/136043-1111.1a",
+		"ROMs/136043-1113.1l",
+		"ROMs/136043-1115.2a",
+		"ROMs/136043-1117.2l",
+	},
+	{
+		"ROMs/136043-1123.1c",
+		"ROMs/136043-1124.1p",
+		"ROMs/136043-1125.2c",
+		"ROMs/136043-1126.2p",
+	},
+}
+
+// returns the actual tile number to use, and the rom set to use it with
+func getromset(tilenum int) (int, []string) {
+	whichrom := tilenum / 0x800
+	actualtile := tilenum - (whichrom * 0x800)
+
+	return actualtile, romSets[whichrom]
+}
+
 type TileLinePlane []byte
 
 type TileLinePlaneSet [][]byte
@@ -100,10 +129,12 @@ func blankimage(x int, y int) *image.Paletted {
 func getparsedtile(tilenum int) Tile {
 	planedata := make([]TileLinePlane, 4)
 
-	planedata[0] = gettiledatafromfile("ROMs/136043-1111.1a", tilenum)
-	planedata[1] = gettiledatafromfile("ROMs/136043-1113.1l", tilenum)
-	planedata[2] = gettiledatafromfile("ROMs/136043-1115.2a", tilenum)
-	planedata[3] = gettiledatafromfile("ROMs/136043-1117.2l", tilenum)
+	realtilenum, roms := getromset(tilenum)
+
+	planedata[0] = gettiledatafromfile(roms[0], realtilenum)
+	planedata[1] = gettiledatafromfile(roms[1], realtilenum)
+	planedata[2] = gettiledatafromfile(roms[2], realtilenum)
+	planedata[3] = gettiledatafromfile(roms[3], realtilenum)
 	// fmt.Printf("planedata is: %d\n", planedata)
 
 	// fulltile := Tile{}
@@ -154,7 +185,7 @@ func main() {
 	// databytes := gettilefromfile("ROMs/136043-1119.16s", 50)
 	// fmt.Printf("byte(s): %02x\n", databytes)
 
-	img := genimage(0x4fc, 2, 2)
+	img := genimage(0xcfc, 2, 2)
 	f, _ := os.OpenFile("test.gif", os.O_WRONLY|os.O_CREATE, 0600)
 	defer f.Close()
 
