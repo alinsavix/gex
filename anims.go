@@ -26,8 +26,8 @@ var ghostAnims = MobAnims{
 	},
 }
 
-var monsters = []Monster{
-	{
+var monsters = map[string]Monster{
+	"ghost": {
 		xsize:   3,
 		ysize:   3,
 		palette: gauntletPalettes["base"][0],

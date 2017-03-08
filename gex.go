@@ -201,6 +201,7 @@ var flagDimX = flag.Int("x", 2, "x width (in tiles)")
 var flagDimY = flag.Int("y", 2, "y height (in tiles)")
 var flagOutput = flag.String("o", "test.gif", "output `filename`")
 var flagAnimate = flag.Bool("a", false, "animated output")
+var flagMonster = flag.String("m", "", "monster to render")
 
 func main() {
 	flag.Parse()
@@ -214,8 +215,13 @@ func main() {
 		defer f.Close()
 		gif.Encode(f, img, &gif.Options{NumColors: 16})
 	} else {
-		t := ghostAnims["walk"]["upright"]
-		imgs := genanim(t, *flagDimX, *flagDimY)
+		t := monsters[*flagMonster].anims["walk"]["upright"]
+		x := monsters[*flagMonster].xsize
+		y := monsters[*flagMonster].ysize
+		imgs := genanim(t, x, y)
+
+		//		t := ghostAnims["walk"]["upright"]
+		//		imgs := genanim(t, *flagDimX, *flagDimY)
 		f, _ := os.OpenFile(*flagOutput, os.O_WRONLY|os.O_CREATE, 0600)
 		defer f.Close()
 
