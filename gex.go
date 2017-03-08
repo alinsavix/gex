@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"image"
 	"image/color"
 	"image/gif"
@@ -182,24 +183,55 @@ func genimage(tilenum int, xtiles int, ytiles int) *image.Paletted {
 	return img
 }
 
+func genanim(animarray []int, xtiles int, ytiles int) []*image.Paletted {
+	var images []*image.Paletted
+
+	for i := 0; i < len(animarray); i++ {
+		fmt.Printf("generating from tile %d\n", animarray[i])
+		images = append(images, genimage(animarray[i], xtiles, ytiles))
+	}
+
+	return images
+}
+
 var flagPalType = flag.String("palettetype", "base", "palette type")
 var flagPalNum = flag.Int("palettenum", 0, "palette number")
 var flagTile = flag.Int("tile", 0xcfc, "tile to render")
 var flagDimX = flag.Int("x", 2, "x width (in tiles)")
 var flagDimY = flag.Int("y", 2, "y height (in tiles)")
 var flagOutput = flag.String("o", "test.gif", "output `filename`")
+var flagAnimate = flag.Bool("a", false, "animated output")
 
 func main() {
 	flag.Parse()
 	// databytes := gettilefromfile("ROMs/136043-1119.16s", 50)
 	// fmt.Printf("byte(s): %02x\n", databytes)
 
-	t := ghostAnims["walk"]["up"][0]
-	img := genimage(t, *flagDimX, *flagDimY)
-	f, _ := os.OpenFile(*flagOutput, os.O_WRONLY|os.O_CREATE, 0600)
-	defer f.Close()
+	if *flagAnimate == false {
+		t := ghostAnims["walk"]["up"][0]
+		img := genimage(t, *flagDimX, *flagDimY)
+		f, _ := os.OpenFile(*flagOutput, os.O_WRONLY|os.O_CREATE, 0600)
+		defer f.Close()
+		gif.Encode(f, img, &gif.Options{NumColors: 16})
+	} else {
+		t := ghostAnims["walk"]["upright"]
+		imgs := genanim(t, *flagDimX, *flagDimY)
+		f, _ := os.OpenFile(*flagOutput, os.O_WRONLY|os.O_CREATE, 0600)
+		defer f.Close()
 
-	gif.Encode(f, img, &gif.Options{NumColors: 16})
+		var delays []int
+		for i := 0; i < len(t); i++ {
+			delays = append(delays, 15)
+		}
+
+		gif.EncodeAll(f,
+			&gif.GIF{
+				Image: imgs,
+				Delay: delays,
+			},
+		)
+	}
+
 	//	fmt.Printf("planes work out to: %d\n", planedata)
 	//	fmt.Printf("indexes work out to: %d\n", mergeplanes(planedata))
 }
