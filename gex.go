@@ -194,7 +194,8 @@ func main() {
 	// databytes := gettilefromfile("ROMs/136043-1119.16s", 50)
 	// fmt.Printf("byte(s): %02x\n", databytes)
 
-	img := genimage(*flagTile, *flagDimX, *flagDimY)
+	t := ghostAnims["walk"]["up"][0]
+	img := genimage(t, *flagDimX, *flagDimY)
 	f, _ := os.OpenFile(*flagOutput, os.O_WRONLY|os.O_CREATE, 0600)
 	defer f.Close()
 
