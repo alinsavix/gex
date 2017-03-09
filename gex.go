@@ -32,35 +32,6 @@ func (c IRGB) RGBA() (r, g, b, a uint32) {
 	return
 }
 
-var romSets = [][]string{
-	{
-		"ROMs/136037-112.1b",
-		"ROMs/136037-114.1mn",
-		"ROMs/136037-116.2b",
-		"ROMs/136037-118.2mn",
-	},
-	{
-		"ROMs/136043-1111.1a",
-		"ROMs/136043-1113.1l",
-		"ROMs/136043-1115.2a",
-		"ROMs/136043-1117.2l",
-	},
-	{
-		"ROMs/136043-1123.1c",
-		"ROMs/136043-1124.1p",
-		"ROMs/136043-1125.2c",
-		"ROMs/136043-1126.2p",
-	},
-}
-
-// returns the actual tile number to use, and the rom set to use it with
-func getromset(tilenum int) (int, []string) {
-	whichrom := tilenum / 0x800
-	actualtile := tilenum - (whichrom * 0x800)
-
-	return actualtile, romSets[whichrom]
-}
-
 type TileLinePlane []byte
 
 type TileLinePlaneSet [][]byte
