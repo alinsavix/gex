@@ -5,51 +5,47 @@ type Romset struct {
 	roms   []string
 }
 
+var roms = [][]string{
+	{
+		"ROMs/136043-1111.1a",
+		"ROMs/136043-1113.1l",
+		"ROMs/136043-1115.2a",
+		"ROMs/136043-1117.2l",
+	},
+	{
+		"ROMs/136037-112.1b",
+		"ROMs/136037-114.1mn",
+		"ROMs/136037-116.2b",
+		"ROMs/136037-118.2mn",
+	},
+	{
+		"ROMs/136043-1123.1c",
+		"ROMs/136043-1124.1p",
+		"ROMs/136043-1125.2c",
+		"ROMs/136043-1126.2p",
+	},
+}
+
 var romSets = []Romset{
 	{
 		offset: 0x800,
-		roms: []string{
-			"ROMs/136043-1111.1a",
-			"ROMs/136043-1113.1l",
-			"ROMs/136043-1115.2a",
-			"ROMs/136043-1117.2l",
-		},
+		roms:   roms[0],
 	},
 	{
 		offset: 0x0,
-		roms: []string{
-			"ROMs/136043-1111.1a",
-			"ROMs/136043-1113.1l",
-			"ROMs/136043-1115.2a",
-			"ROMs/136043-1117.2l",
-		},
+		roms:   roms[0],
 	},
 	{
 		offset: 0x800,
-		roms: []string{
-			"ROMs/136037-112.1b",
-			"ROMs/136037-114.1mn",
-			"ROMs/136037-116.2b",
-			"ROMs/136037-118.2mn",
-		},
+		roms:   roms[1],
 	},
 	{
 		offset: 0x0,
-		roms: []string{
-			"ROMs/136037-112.1b",
-			"ROMs/136037-114.1mn",
-			"ROMs/136037-116.2b",
-			"ROMs/136037-118.2mn",
-		},
+		roms:   roms[1],
 	},
 	{
 		offset: 0x0,
-		roms: []string{
-			"ROMs/136043-1123.1c",
-			"ROMs/136043-1124.1p",
-			"ROMs/136043-1125.2c",
-			"ROMs/136043-1126.2p",
-		},
+		roms:   roms[2],
 	},
 }
 
