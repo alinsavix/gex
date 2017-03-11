@@ -1,7 +1,11 @@
 package main
 
-import "github.com/jessevdk/go-flags"
-import "os"
+import (
+	"os"
+	"regexp"
+
+	"github.com/jessevdk/go-flags"
+)
 
 var opts struct {
 	Animate bool   `short:"a" long:"animate" description:"Animate monster"`
@@ -16,10 +20,36 @@ var opts struct {
 	Wall    int    `short:"w" long:"wall" default:"-1" base:"16" description:"Wall stamp to render (in hex)"`
 }
 
-func gexinit() {
-	_, err := flags.Parse(&opts)
+const (
+	TypeNone = iota
+	TypeMonster
+	TypeFloor
+	TypeWall
+)
+
+var runType = TypeNone
+
+var reMonsters = regexp.MustCompile(`^(ghost)`)
+var reFloor = regexp.MustCompile(`^(floor)`)
+var reWall = regexp.MustCompile(`^(wall)`)
+
+func gexinit() []string {
+	args, err := flags.Parse(&opts)
 	if err != nil {
 		os.Exit(1)
 		// check(err)
 	}
+
+	if len(args) > 0 {
+		switch {
+		case reMonsters.MatchString(args[0]):
+			runType = TypeMonster
+		case reFloor.MatchString(args[0]):
+			runType = TypeFloor
+		case reWall.MatchString(args[0]):
+			runType = TypeWall
+		}
+	}
+
+	return args
 }
