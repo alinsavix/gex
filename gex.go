@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"image"
 	"image/color"
@@ -94,7 +93,7 @@ func blankimage(x int, y int) *image.Paletted {
 	rect := image.Rect(0, 0, x, y)
 
 	// palette 0 (more or less), for exits and such
-	palette := gauntletPalettes[*flagPalType][*flagPalNum]
+	palette := gauntletPalettes[opts.PalType][opts.PalNum]
 	img := image.NewPaletted(rect, color.Palette(palette))
 	return img
 }
@@ -181,39 +180,28 @@ func genanim(animarray []int, xtiles int, ytiles int) []*image.Paletted {
 	return images
 }
 
-var flagPalType = flag.String("pt", "base", "palette type")
-var flagPalNum = flag.Int("pn", 0, "palette number")
-var flagTile = flag.Int("tile", 0xcfc, "tile to render")
-var flagDimX = flag.Int("x", 2, "x width (in tiles)")
-var flagDimY = flag.Int("y", 2, "y height (in tiles)")
-var flagOutput = flag.String("o", "test.gif", "output `filename`")
-var flagAnimate = flag.Bool("a", false, "animated output")
-var flagMonster = flag.String("m", "", "monster to render")
-var flagFloor = flag.Int("f", -1, "floor type to render")
-var flagWall = flag.Int("w", -1, "wall type to render")
-
 func main() {
-	flag.Parse()
+	gexinit()
 
-	if *flagFloor >= 0 {
-		t := floorStamps[*flagFloor]
+	if opts.Floor >= 0 {
+		t := floorStamps[opts.Floor]
 		img := genimage_fromarray(t, 2, 2)
-		f, _ := os.OpenFile(*flagOutput, os.O_WRONLY|os.O_CREATE, 0600)
+		f, _ := os.OpenFile(opts.Output, os.O_WRONLY|os.O_CREATE, 0600)
 		defer f.Close()
 		gif.Encode(f, img, &gif.Options{NumColors: 16})
-	} else if *flagWall >= 0 {
-		t := wallStamps[*flagWall]
+	} else if opts.Wall >= 0 {
+		t := wallStamps[opts.Wall]
 		img := genimage_fromarray(t, 2, 2)
-		f, _ := os.OpenFile(*flagOutput, os.O_WRONLY|os.O_CREATE, 0600)
+		f, _ := os.OpenFile(opts.Output, os.O_WRONLY|os.O_CREATE, 0600)
 		defer f.Close()
 		gif.Encode(f, img, &gif.Options{NumColors: 16})
-	} else if *flagAnimate == true {
-		t := monsters[*flagMonster].anims["walk"]["upright"]
-		x := monsters[*flagMonster].xsize
-		y := monsters[*flagMonster].ysize
+	} else if opts.Animate == true {
+		t := monsters[opts.Monster].anims["walk"]["upright"]
+		x := monsters[opts.Monster].xsize
+		y := monsters[opts.Monster].ysize
 		imgs := genanim(t, x, y)
 
-		f, _ := os.OpenFile(*flagOutput, os.O_WRONLY|os.O_CREATE, 0600)
+		f, _ := os.OpenFile(opts.Output, os.O_WRONLY|os.O_CREATE, 0600)
 		defer f.Close()
 
 		var delays []int
@@ -228,9 +216,9 @@ func main() {
 			},
 		)
 	} else {
-		t := *flagTile
-		img := genimage(t, *flagDimX, *flagDimY)
-		f, _ := os.OpenFile(*flagOutput, os.O_WRONLY|os.O_CREATE, 0600)
+		t := opts.Tile
+		img := genimage(t, opts.DimX, opts.DimY)
+		f, _ := os.OpenFile(opts.Output, os.O_WRONLY|os.O_CREATE, 0600)
 		defer f.Close()
 		gif.Encode(f, img, &gif.Options{NumColors: 16})
 	}
