@@ -50,6 +50,8 @@ func main() {
 		os.Exit(1)
 	case TypeFloor:
 		dofloor(args[0])
+	case TypeWall:
+		dowall(args[0])
 	case TypeMonster:
 		domonster(args[0])
 	}
