@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"image/gif"
 	"os"
 )
 
@@ -41,13 +42,24 @@ func check(e error) {
 	}
 }
 
+func dotile(tile int) {
+	img := genimage(tile, opts.DimX, opts.DimY)
+	f, _ := os.OpenFile(opts.Output, os.O_WRONLY|os.O_CREATE, 0600)
+	defer f.Close()
+	gif.Encode(f, img, &gif.Options{NumColors: 16})
+}
+
 func main() {
 	args := gexinit()
 
 	switch runType {
 	case TypeNone:
-		fmt.Println("Missing or incorrect identity line.")
-		os.Exit(1)
+		if opts.Tile > 0 {
+			dotile(opts.Tile)
+		} else {
+			fmt.Println("Missing or incorrect identity line.")
+			os.Exit(1)
+		}
 	case TypeFloor:
 		dofloor(args[0])
 	case TypeWall:
@@ -89,10 +101,10 @@ func main() {
 	// 		},
 	// 	)
 	// } else {
-	// 	t := opts.Tile
-	// 	img := genimage(t, opts.DimX, opts.DimY)
-	// 	f, _ := os.OpenFile(opts.Output, os.O_WRONLY|os.O_CREATE, 0600)
-	// 	defer f.Close()
-	// 	gif.Encode(f, img, &gif.Options{NumColors: 16})
+	//  t := opts.Tile
+	//  img := genimage(t, opts.DimX, opts.DimY)
+	//  f, _ := os.OpenFile(opts.Output, os.O_WRONLY|os.O_CREATE, 0600)
+	//  defer f.Close()
+	//  gif.Encode(f, img, &gif.Options{NumColors: 16})
 	//	}
 }
