@@ -2,31 +2,9 @@ package main
 
 import (
 	"fmt"
-	"image/gif"
+	"image/png"
 	"os"
 )
-
-type Color interface {
-	IRGB() (irgb uint16)
-}
-
-type IRGB struct {
-	irgb uint16
-}
-
-func (c IRGB) RGBA() (r, g, b, a uint32) {
-	i := uint32(c.irgb&0xf000) >> 12
-	r = uint32(c.irgb&0x0f00) >> 8 * i
-	g = uint32(c.irgb&0x00f0) >> 4 * i
-	b = uint32(c.irgb&0x000f) * i
-
-	r = r << 8
-	g = g << 8
-	b = b << 8
-	a = 0xffff
-
-	return
-}
 
 type TileLinePlane []byte
 
@@ -46,7 +24,8 @@ func dotile(tile int) {
 	img := genimage(tile, opts.DimX, opts.DimY)
 	f, _ := os.OpenFile(opts.Output, os.O_WRONLY|os.O_CREATE, 0600)
 	defer f.Close()
-	gif.Encode(f, img, &gif.Options{NumColors: 16})
+	// gif.Encode(f, img, &gif.Options{NumColors: 16})
+	png.Encode(f, img)
 }
 
 func main() {

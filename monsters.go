@@ -1,7 +1,7 @@
 package main
 
 import (
-	"image/gif"
+	"image/png"
 	"os"
 	"regexp"
 	"strconv"
@@ -66,25 +66,25 @@ func domonster(arg string) {
 	opts.PalNum = monsters[monsterType].pnum + (monsterLevel + 1) // FIME: This is weird and seems wrong
 
 	if opts.Animate == true {
-		t := monsters[monsterType].anims[monsterAction][monsterDir]
-		x := monsters[monsterType].xsize
-		y := monsters[monsterType].ysize
-		imgs := genanim(t, x, y)
+		// t := monsters[monsterType].anims[monsterAction][monsterDir]
+		// x := monsters[monsterType].xsize
+		// y := monsters[monsterType].ysize
+		// imgs := genanim(t, x, y)
 
-		f, _ := os.OpenFile(opts.Output, os.O_WRONLY|os.O_CREATE, 0600)
-		defer f.Close()
+		// f, _ := os.OpenFile(opts.Output, os.O_WRONLY|os.O_CREATE, 0600)
+		// defer f.Close()
 
-		var delays []int
-		for i := 0; i < len(t); i++ {
-			delays = append(delays, 15)
-		}
+		// var delays []int
+		// for i := 0; i < len(t); i++ {
+		// 	delays = append(delays, 15)
+		// }
 
-		gif.EncodeAll(f,
-			&gif.GIF{
-				Image: imgs,
-				Delay: delays,
-			},
-		)
+		// gif.EncodeAll(f,
+		// 	&gif.GIF{
+		// 		Image: imgs,
+		// 		Delay: delays,
+		// 	},
+		// )
 	} else {
 		// fmt.Printf("%#v\n", monsters[monsterType].anims["walk"])
 		// fmt.Printf("Action: %#v\n", monsterAction)
@@ -94,6 +94,7 @@ func domonster(arg string) {
 		img := genimage(t, x, y)
 		f, _ := os.OpenFile(opts.Output, os.O_WRONLY|os.O_CREATE, 0600)
 		defer f.Close()
-		gif.Encode(f, img, &gif.Options{NumColors: 16})
+		// gif.Encode(f, img, &gif.Options{NumColors: 16})
+		png.Encode(f, img)
 	}
 }

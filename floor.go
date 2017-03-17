@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"image/gif"
+	"image/png"
 	"os"
 	"regexp"
 	"strconv"
@@ -62,7 +62,8 @@ func dofloor(arg string) {
 	img := genimage_fromarray(t, 2, 2)
 	f, _ := os.OpenFile(opts.Output, os.O_WRONLY|os.O_CREATE, 0600)
 	defer f.Close()
-	gif.Encode(f, img, &gif.Options{NumColors: 16})
+	// gif.Encode(f, img, &gif.Options{NumColors: 16})
+	png.Encode(f, img)
 
 }
 

@@ -3,10 +3,31 @@ package main
 import (
 	"fmt"
 	"image"
-	"image/color"
 	"math"
 	"os"
 )
+
+type Color interface {
+	IRGB() (irgb uint16)
+}
+
+type IRGB struct {
+	irgb uint16
+}
+
+func (c IRGB) RGBA() (r, g, b, a uint32) {
+	i := uint32(c.irgb&0xf000) >> 12
+	r = uint32(c.irgb&0x0f00) >> 8 * i
+	g = uint32(c.irgb&0x00f0) >> 4 * i
+	b = uint32(c.irgb&0x000f) * i
+
+	r = r << 8
+	g = g << 8
+	b = b << 8
+	a = 0xffff
+
+	return
+}
 
 func gettiledatafromfile(file string, tilenum int) TileLinePlane {
 	f, err := os.Open(file)
@@ -52,12 +73,12 @@ func mergeplanes(planes TileLinePlaneSet) TileLineMerged {
 	return mergedline
 }
 
-func blankimage(x int, y int) *image.Paletted {
+func blankimage(x int, y int) *image.NRGBA {
 	rect := image.Rect(0, 0, x, y)
 
 	// palette 0 (more or less), for exits and such
-	palette := gauntletPalettes[opts.PalType][opts.PalNum]
-	img := image.NewPaletted(rect, color.Palette(palette))
+	//	palette := gauntletPalettes[opts.PalType][opts.PalNum]
+	img := image.NewNRGBA(rect)
 	return img
 }
 
@@ -93,15 +114,19 @@ func getparsedtile(tilenum int) Tile {
 }
 
 // Write an 8x8 tile into a (usually) larger image
-func writetiletoimage(tile Tile, img *image.Paletted, x int, y int) {
+func writetiletoimage(tile Tile, img *image.NRGBA, x int, y int) {
 	for j := 0; j < 8; j++ {
 		for i := 0; i < 8; i++ {
-			img.SetColorIndex(x+i, y+j, tile[j][i])
+			tc := tile[j][i]
+			c := gauntletPalettes[opts.PalType][opts.PalNum][tc]
+			img.Set(x+i, y+j, c)
+			// fmt.Printf("%x", tc)
 		}
+		// fmt.Printf("\n")
 	}
 }
 
-func genimage(tilenum int, xtiles int, ytiles int) *image.Paletted {
+func genimage(tilenum int, xtiles int, ytiles int) *image.NRGBA {
 	img := blankimage(8*xtiles, 8*ytiles)
 
 	tc := 0
@@ -116,7 +141,7 @@ func genimage(tilenum int, xtiles int, ytiles int) *image.Paletted {
 	return img
 }
 
-func genimage_fromarray(tiles []int, xtiles int, ytiles int) *image.Paletted {
+func genimage_fromarray(tiles []int, xtiles int, ytiles int) *image.NRGBA {
 	img := blankimage(8*xtiles, 8*ytiles)
 
 	tc := 0
@@ -132,13 +157,13 @@ func genimage_fromarray(tiles []int, xtiles int, ytiles int) *image.Paletted {
 	return img
 }
 
-func genanim(animarray []int, xtiles int, ytiles int) []*image.Paletted {
-	var images []*image.Paletted
+// func genanim(animarray []int, xtiles int, ytiles int) []*image.Paletted {
+// 	var images []*image.Paletted
 
-	for i := 0; i < len(animarray); i++ {
-		fmt.Printf("generating from tile %d\n", animarray[i])
-		images = append(images, genimage(animarray[i], xtiles, ytiles))
-	}
+// 	for i := 0; i < len(animarray); i++ {
+// 		fmt.Printf("generating from tile %d\n", animarray[i])
+// 		images = append(images, genimage(animarray[i], xtiles, ytiles))
+// 	}
 
-	return images
-}
+// 	return images
+// }
