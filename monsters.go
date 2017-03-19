@@ -1,8 +1,6 @@
 package main
 
 import (
-	"image/png"
-	"os"
 	"regexp"
 	"strconv"
 	"strings"
@@ -92,9 +90,6 @@ func domonster(arg string) {
 		x := monsters[monsterType].xsize
 		y := monsters[monsterType].ysize
 		img := genimage(t, x, y)
-		f, _ := os.OpenFile(opts.Output, os.O_WRONLY|os.O_CREATE, 0600)
-		defer f.Close()
-		// gif.Encode(f, img, &gif.Options{NumColors: 16})
-		png.Encode(f, img)
+		savetopng(opts.Output, img)
 	}
 }

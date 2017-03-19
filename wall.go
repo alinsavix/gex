@@ -2,8 +2,6 @@ package main
 
 import (
 	"fmt"
-	"image/png"
-	"os"
 	"regexp"
 	"strconv"
 	"strings"
@@ -56,23 +54,29 @@ func dowall(arg string) {
 	}
 	fmt.Printf("Wall number: %d   color: %d   adj: %d\n", wallNum, wallColor, wallAdj)
 
+	// t := floorGetTiles(floorNum, floorAdj)
+	stamp := wallGetStamp(wallNum, wallAdj, wallColor)
+
+	img := blankimage(2*8, 2*8)
+	writestamptoimage(img, stamp, 0, 0)
+	savetopng(opts.Output, img)
+}
+
+func wallGetTiles(wallNum int, wallAdj int) []int {
 	t := make([]int, 4)
 	for i := 0; i < 4; i++ {
-		// t[i] = (floorNum * 48) + floorStamps[floorAdj][i]
 		m := wallMap[wallAdj]
 		t[i] = wallStamps[(68*wallNum)+m][i]
 	}
 
-	// These need to be done better
-	opts.PalType = "wall"
-	opts.PalNum = wallColor
+	return t
+}
 
-	img := genimage_fromarray(t, 2, 2)
-	f, _ := os.OpenFile(opts.Output, os.O_WRONLY|os.O_CREATE, 0600)
-	defer f.Close()
-	// gif.Encode(f, img, &gif.Options{NumColors: 16})
-	png.Encode(f, img)
+func wallGetStamp(wallNum int, wallAdj int, wallColor int) *Stamp {
+	tiles := wallGetTiles(wallNum, wallAdj)
+	stamp := genstamp_fromarray(tiles, 2, "wall", wallColor)
 
+	return stamp
 }
 
 var wallStamps = [][]int{

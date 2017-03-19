@@ -20,6 +20,7 @@ type Stamp struct {
 	data    []TileData
 	ptype   string
 	pnum    int
+	trans0  bool
 }
 
 func check(e error) {

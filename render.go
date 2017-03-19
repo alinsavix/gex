@@ -3,6 +3,7 @@ package main
 import (
 	"image"
 	"image/color"
+	"image/png"
 	"math"
 	"os"
 )
@@ -179,6 +180,12 @@ func writestamptoimage(img *image.NRGBA, stamp *Stamp, xloc int, yloc int) {
 		}
 	}
 
+}
+
+func savetopng(fn string, img *image.NRGBA) {
+	f, _ := os.OpenFile(fn, os.O_WRONLY|os.O_CREATE, 0600)
+	defer f.Close()
+	png.Encode(f, img)
 }
 
 // func genanim(animarray []int, xtiles int, ytiles int) []*image.Paletted {
