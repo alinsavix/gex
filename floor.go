@@ -50,21 +50,33 @@ func dofloor(arg string) {
 	}
 	fmt.Printf("Floor number: %d   color: %d    adj: %d\n", floorNum, floorColor, floorAdj)
 
-	t := make([]int, 4)
-	for i := 0; i < 4; i++ {
-		t[i] = (floorNum * 48) + floorStamps[floorAdj][i]
-	}
+	// t := floorGetTiles(floorNum, floorAdj)
+	stamp := floorGetStamp(floorNum, floorAdj, floorColor)
 
-	// These need to be done better
-	opts.PalType = "floor"
-	opts.PalNum = floorColor
+	img := blankimage(2*8, 2*8)
+	writestamptoimage(img, stamp, 0, 0)
 
-	img := genimage_fromarray(t, 2, 2)
 	f, _ := os.OpenFile(opts.Output, os.O_WRONLY|os.O_CREATE, 0600)
 	defer f.Close()
 	// gif.Encode(f, img, &gif.Options{NumColors: 16})
 	png.Encode(f, img)
 
+}
+
+func floorGetTiles(floorNum int, floorAdj int) []int {
+	t := make([]int, 4)
+	for i := 0; i < 4; i++ {
+		t[i] = (floorNum * 48) + floorStamps[floorAdj][i]
+	}
+
+	return t
+}
+
+func floorGetStamp(floorNum int, floorAdj int, floorColor int) *Stamp {
+	tiles := floorGetTiles(floorNum, floorAdj)
+	stamp := genstamp_fromarray(tiles, 2, "floor", floorColor)
+
+	return stamp
 }
 
 var floorStamps = [][]int{

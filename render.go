@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"image"
+	"image/color"
 	"math"
 	"os"
 )
@@ -82,7 +82,7 @@ func blankimage(x int, y int) *image.NRGBA {
 	return img
 }
 
-func getparsedtile(tilenum int) Tile {
+func getparsedtile(tilenum int) TileData {
 	planedata := make([]TileLinePlane, 4)
 
 	realtilenum, roms := getromset(tilenum)
@@ -114,11 +114,11 @@ func getparsedtile(tilenum int) Tile {
 }
 
 // Write an 8x8 tile into a (usually) larger image
-func writetiletoimage(tile Tile, img *image.NRGBA, x int, y int) {
+func writetiletoimage(img *image.NRGBA, tile TileData, palette []color.Color, x int, y int) {
 	for j := 0; j < 8; j++ {
 		for i := 0; i < 8; i++ {
 			tc := tile[j][i]
-			c := gauntletPalettes[opts.PalType][opts.PalNum][tc]
+			c := palette[tc]
 			img.Set(x+i, y+j, c)
 			// fmt.Printf("%x", tc)
 		}
@@ -127,34 +127,58 @@ func writetiletoimage(tile Tile, img *image.NRGBA, x int, y int) {
 }
 
 func genimage(tilenum int, xtiles int, ytiles int) *image.NRGBA {
-	img := blankimage(8*xtiles, 8*ytiles)
+	t := make([]int, xtiles*ytiles)
+
+	for i := 0; i < (xtiles * ytiles); i++ {
+		t[i] = tilenum + i
+	}
+
+	return genimage_fromarray(t, xtiles, ytiles)
+}
+
+func genstamp_fromarray(tiles []int, width int, ptype string, pnum int) *Stamp {
+	stamp := Stamp{
+		width: width,
+		ptype: ptype,
+		pnum:  pnum,
+	}
+
+	stamp.numbers = tiles
+	stamp.data = make([]TileData, len(tiles))
 
 	tc := 0
-	for y := 0; y < ytiles; y++ {
-		for x := 0; x < xtiles; x++ {
-			tile := getparsedtile(tilenum + tc)
-			writetiletoimage(tile, img, x*8, y*8)
+	height := len(tiles) / width
+
+	for y := 0; y < height; y++ {
+		for x := 0; x < width; x++ {
+			stamp.data[(width*y)+x] = getparsedtile(tiles[tc])
 			tc++
 		}
 	}
+
+	return &stamp
+}
+
+func genimage_fromarray(tiles []int, xtiles int, ytiles int) *image.NRGBA {
+	stamp := genstamp_fromarray(tiles, xtiles, opts.PalType, opts.PalNum)
+
+	img := blankimage(8*xtiles, 8*ytiles)
+	writestamptoimage(img, stamp, 0, 0)
 
 	return img
 }
 
-func genimage_fromarray(tiles []int, xtiles int, ytiles int) *image.NRGBA {
-	img := blankimage(8*xtiles, 8*ytiles)
-
-	tc := 0
-	for y := 0; y < ytiles; y++ {
-		for x := 0; x < xtiles; x++ {
-			fmt.Printf("tile: %d\n", tiles[tc])
-			tile := getparsedtile(tiles[tc])
-			writetiletoimage(tile, img, x*8, y*8)
-			tc++
+// FIXME: Rename later!
+func writestamptoimage(img *image.NRGBA, stamp *Stamp, xloc int, yloc int) {
+	p := gauntletPalettes[stamp.ptype][stamp.pnum]
+	for y := 0; y < len(stamp.data)/stamp.width; y++ {
+		for x := 0; x < stamp.width; x++ {
+			// fmt.Printf("Writing to image at %d,%d\n", xloc, yloc)
+			writetiletoimage(img, stamp.data[(stamp.width*y)+x], p,
+				xloc+(x*8), yloc+(y*8))
 		}
 	}
 
-	return img
 }
 
 // func genanim(animarray []int, xtiles int, ytiles int) []*image.Paletted {

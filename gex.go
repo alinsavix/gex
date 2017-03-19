@@ -12,7 +12,15 @@ type TileLinePlaneSet [][]byte
 
 type TileLineMerged []byte
 
-type Tile []TileLineMerged
+type TileData []TileLineMerged
+
+type Stamp struct {
+	width   int
+	numbers []int
+	data    []TileData
+	ptype   string
+	pnum    int
+}
 
 func check(e error) {
 	if e != nil {
@@ -30,6 +38,8 @@ func dotile(tile int) {
 
 func main() {
 	args := gexinit()
+	genpfimage()
+	os.Exit(0)
 
 	switch runType {
 	case TypeNone:
