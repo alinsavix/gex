@@ -14,6 +14,7 @@ type TileLineMerged []byte
 
 type TileData []TileLineMerged
 
+// FIXME: change name to something not "numbers"
 type Stamp struct {
 	width   int
 	numbers []int
@@ -39,8 +40,8 @@ func dotile(tile int) {
 
 func main() {
 	args := gexinit()
-	genpfimage()
-	os.Exit(0)
+	// genpfimage()
+	// os.Exit(0)
 
 	switch runType {
 	case TypeNone:
@@ -56,6 +57,8 @@ func main() {
 		dowall(args[0])
 	case TypeMonster:
 		domonster(args[0])
+	case TypeItem:
+		doitem(args[0])
 	}
 
 	// if opts.Floor >= 0 {

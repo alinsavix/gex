@@ -147,17 +147,23 @@ func genstamp_fromarray(tiles []int, width int, ptype string, pnum int) *Stamp {
 	stamp.numbers = tiles
 	stamp.data = make([]TileData, len(tiles))
 
-	tc := 0
-	height := len(tiles) / width
+	fillstamp(&stamp)
 
+	return &stamp
+}
+
+func fillstamp(stamp *Stamp) {
+	tc := 0
+	height := len(stamp.numbers) / stamp.width
+
+	stamp.data = make([]TileData, len(stamp.numbers))
+	// spew.Dump("Stamp: ", stamp)
 	for y := 0; y < height; y++ {
-		for x := 0; x < width; x++ {
-			stamp.data[(width*y)+x] = getparsedtile(tiles[tc])
+		for x := 0; x < stamp.width; x++ {
+			stamp.data[(stamp.width*y)+x] = getparsedtile(stamp.numbers[tc])
 			tc++
 		}
 	}
-
-	return &stamp
 }
 
 func genimage_fromarray(tiles []int, xtiles int, ytiles int) *image.NRGBA {

@@ -25,6 +25,7 @@ const (
 	TypeMonster
 	TypeFloor
 	TypeWall
+	TypeItem
 )
 
 var runType = TypeNone
@@ -32,6 +33,7 @@ var runType = TypeNone
 var reMonsters = regexp.MustCompile(`^(ghost)`)
 var reFloor = regexp.MustCompile(`^(floor)`)
 var reWall = regexp.MustCompile(`^(wall)`)
+var reItem = regexp.MustCompile(`^(item)`)
 
 func gexinit() []string {
 	args, err := flags.Parse(&opts)
@@ -48,6 +50,8 @@ func gexinit() []string {
 			runType = TypeFloor
 		case reWall.MatchString(args[0]):
 			runType = TypeWall
+		case reItem.MatchString(args[0]):
+			runType = TypeItem
 		}
 	}
 
