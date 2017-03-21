@@ -5,7 +5,7 @@ import (
 )
 
 var testmaze = []string{
-	"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+	"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", // 1
 	"                     0          ",
 	" bbb                            ",
 	"  b         b   b               ",
@@ -20,21 +20,21 @@ var testmaze = []string{
 	"      b                         ",
 	"     b                          ",
 	"    b                           ",
+	"             c                  ",
 	"                                ",
 	"                                ",
 	"                                ",
+	"   1    2    3    4    5    6   ", // 20
 	"                                ",
-	"          0                     ", //20
+	"   7              p    q    r   ",
 	"                                ",
+	"   s    t    u    v    w    x   ",
 	"                                ",
+	"   y    z    A    B    C    D   ",
 	"                                ",
+	"   E    F    G    T    U    V   ",
 	"                                ",
-	"                                ",
-	"                                ",
-	"                                ",
-	"                                ",
-	"                                ",
-	"                                ", // 30
+	"   W    X    Y    Z    0        ", // 30
 	"                                ",
 	"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
 }
@@ -54,13 +54,85 @@ func genpfimage() {
 
 	for y := 0; y < 32; y++ {
 		for x := 0; x < 32; x++ {
+			var stamp *Stamp
+
 			switch what(testmaze, x, y) {
 			case 'b':
 				adj := checkadj8(testmaze, x, y)
-				stamp := wallGetStamp(0, adj, 3)
-				writestamptoimage(img, stamp, x*16, y*16)
+				stamp = wallGetStamp(0, adj, 3)
 			case '0':
-				stamp := itemGetStamp("transportability")
+				stamp = itemGetStamp("key")
+			case '1':
+				stamp = itemGetStamp("invis")
+			case '2':
+				stamp = itemGetStamp("repulse")
+			case '3':
+				stamp = itemGetStamp("reflect")
+			case '4':
+				stamp = itemGetStamp("transportability")
+			case '5':
+				stamp = itemGetStamp("supershot")
+			case '6':
+				stamp = itemGetStamp("invuln")
+			case '7':
+				stamp = itemGetStamp("dragon")
+
+			case 'p':
+				// stamp = itemGetStamp("exit")
+			case 'q':
+				stamp = itemGetStamp("exit6")
+			case 'r':
+				// stamp = itemGetStamp("ghost")
+			case 's':
+				// stamp = itemGetStamp("grunt")
+			case 't':
+			// stamp = itemGetStamp("demon")
+			case 'u':
+			// stamp = itemGetStamp("lobber")
+			case 'v':
+			// stamp = itemGetStamp("sorcerer")
+			case 'w':
+				// stamp = itemGetStamp("auxgrunt")
+
+			case 'x':
+				// stamp = itemGetStamp("death")
+			case 'y':
+				// stamp = itemGetStamp("acid")
+			case 'z':
+				// stamp = itemGetStamp("supersorc")
+			case 'A':
+				// stamp = itemGetStamp("it")
+			case 'B':
+			// stamp = itemGetStamp("ghostgen1")
+			case 'C':
+			// stamp = itemGetStamp("ghostgen2")
+			case 'D':
+			// stamp = itemGetStamp("ghostgen3")
+			case 'E':
+				// stamp = itemGetStamp("gruntgen1")
+
+			case 'F':
+				// stamp = itemGetStamp("gruntgen2")
+			case 'G':
+				// stamp = itemGetStamp("gruntgen3")
+			case 'T':
+				stamp = itemGetStamp("treasure")
+			case 'U':
+				stamp = itemGetStamp("treasurelocked")
+			case 'V':
+			// stamp = itemGetStamp("goldbag")
+			case 'W':
+				stamp = itemGetStamp("mfood")
+			case 'X':
+				stamp = itemGetStamp("ifood1")
+			case 'Y':
+				stamp = itemGetStamp("potion")
+
+			case 'Z':
+				stamp = itemGetStamp("ipotion")
+			}
+
+			if stamp != nil {
 				writestamptoimage(img, stamp, x*16, y*16)
 			}
 		}

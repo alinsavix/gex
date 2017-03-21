@@ -189,6 +189,13 @@ var itemStamps = map[string]Stamp{
 		pnum:    1,
 		trans0:  true,
 	},
+	"treasurelocked": Stamp{
+		width:   3,
+		numbers: tilerange(0x25e4, 9),
+		ptype:   "base",
+		pnum:    1,
+		trans0:  true,
+	},
 
 	// FIXME: wrong palette
 	"tport": Stamp{
@@ -299,9 +306,14 @@ func doitem(arg string) {
 	savetopng(opts.Output, img)
 }
 
+// FIXME: In the future, maybe just return nil and not panic
 func itemGetStamp(itemType string) *Stamp {
-	stamp := itemStamps[itemType]
-	fillstamp(&stamp)
+	stamp, ok := itemStamps[itemType]
 
+	if ok == false {
+		panic("requested bad item: " + itemType)
+	}
+
+	fillstamp(&stamp)
 	return &stamp
 }
