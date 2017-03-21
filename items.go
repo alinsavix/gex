@@ -17,11 +17,230 @@ import (
 var itemStamps = map[string]Stamp{
 	"key": Stamp{
 		width:   2,
-		numbers: []int{0xafc, 0xafd, 0xafe, 0xaff},
+		numbers: tilerange(0xafc, 4),
 		ptype:   "base",
 		pnum:    1,
 		trans0:  true,
 	},
+	"keyring": Stamp{
+		width:   3,
+		numbers: tilerange(0x1d76, 6),
+		ptype:   "base",
+		pnum:    1,
+		trans0:  true,
+	},
+
+	"ifood1": Stamp{
+		width:   3,
+		numbers: tilerange(0x96c, 9),
+		ptype:   "base",
+		pnum:    1,
+		trans0:  true,
+	},
+	"ifood2": Stamp{
+		width:   3,
+		numbers: tilerange(0x975, 9),
+		ptype:   "base",
+		pnum:    1,
+		trans0:  true,
+	},
+	"ifood3": Stamp{
+		width:   3,
+		numbers: tilerange(0x97e, 9),
+		ptype:   "base",
+		pnum:    1,
+		trans0:  true,
+	},
+	"mfood": Stamp{
+		width:   3,
+		numbers: tilerange(0x277b, 9),
+		ptype:   "base",
+		pnum:    1,
+		trans0:  true,
+	},
+	"pfood": Stamp{
+		width:   3,
+		numbers: tilerange(0x25ed, 9),
+		ptype:   "base",
+		pnum:    1,
+		trans0:  true,
+	},
+
+	"potion": Stamp{
+		width:   2,
+		numbers: tilerange(0x8fc, 4),
+		ptype:   "base",
+		pnum:    1,
+		trans0:  true,
+	},
+	"ipotion": Stamp{
+		width:   2,
+		numbers: tilerange(0x9fc, 4),
+		ptype:   "base",
+		pnum:    1,
+		trans0:  true,
+	},
+	"ppotion": Stamp{
+		width:   2,
+		numbers: tilerange(0x20fc, 4),
+		ptype:   "base",
+		pnum:    1,
+		trans0:  true,
+	},
+
+	"shieldpotion": Stamp{
+		width:   2,
+		numbers: tilerange(0x11fc, 4),
+		ptype:   "base",
+		pnum:    1,
+		trans0:  true,
+	},
+	"speedpotion": Stamp{
+		width:   2,
+		numbers: tilerange(0x12fc, 4),
+		ptype:   "base",
+		pnum:    1,
+		trans0:  true,
+	},
+	"magicpotion": Stamp{
+		width:   2,
+		numbers: tilerange(0x13fc, 4),
+		ptype:   "base",
+		pnum:    1,
+		trans0:  true,
+	},
+	"shotpowerpotion": Stamp{
+		width:   2,
+		numbers: tilerange(0x14fc, 4),
+		ptype:   "base",
+		pnum:    1,
+		trans0:  true,
+	},
+	"shotspeedpotion": Stamp{
+		width:   2,
+		numbers: tilerange(0x15fc, 4),
+		ptype:   "base",
+		pnum:    1,
+		trans0:  true,
+	},
+	"fightpotion": Stamp{
+		width:   2,
+		numbers: tilerange(0x16fc, 4),
+		ptype:   "base",
+		pnum:    1,
+		trans0:  true,
+	},
+
+	"invis": Stamp{
+		width:   3,
+		numbers: tilerange(0x1700, 9),
+		ptype:   "base",
+		pnum:    1,
+		trans0:  true,
+	},
+	"transportability": Stamp{
+		width:   2,
+		numbers: tilerange(0x23fc, 4),
+		ptype:   "base",
+		pnum:    1,
+		trans0:  true,
+	},
+	"reflect": Stamp{
+		width:   2,
+		numbers: tilerange(0x24fc, 4),
+		ptype:   "base",
+		pnum:    1,
+		trans0:  true,
+	},
+	"repulse": Stamp{
+		width:   2,
+		numbers: tilerange(0x26fc, 4),
+		ptype:   "base",
+		pnum:    1,
+		trans0:  true,
+	},
+	"invuln": Stamp{
+		width:   2,
+		numbers: tilerange(0x2784, 4),
+		ptype:   "base",
+		pnum:    1,
+		trans0:  true,
+	},
+	"supershot": Stamp{
+		width:   2,
+		numbers: tilerange(0x2788, 4),
+		ptype:   "base",
+		pnum:    1,
+		trans0:  true,
+	},
+
+	"pushwall": Stamp{
+		width:   3,
+		numbers: tilerange(0x20f6, 6),
+		ptype:   "base",
+		pnum:    1,
+		trans0:  true,
+	},
+
+	"treasure": Stamp{
+		width:   3,
+		numbers: tilerange(0x987, 9),
+		ptype:   "base",
+		pnum:    1,
+		trans0:  true,
+	},
+
+	// FIXME: wrong palette
+	"tport": Stamp{
+		width:   2,
+		numbers: tilerange(0x49e, 4),
+		ptype:   "base",
+		pnum:    2,
+		trans0:  true,
+	},
+
+	// FIXME: wrong palette
+	// FIXME: also missing all the various directions
+	"ff": Stamp{
+		width:   2,
+		numbers: tilerange(0x4a2, 4),
+		ptype:   "base",
+		pnum:    2,
+		trans0:  true,
+	},
+
+	"exit4": Stamp{
+		width:   2,
+		numbers: tilerange(0xcfc, 4),
+		ptype:   "floor",
+		pnum:    0,
+		trans0:  false,
+	},
+	"exit6": Stamp{
+		width:   2,
+		numbers: tilerange(0xdfc, 4),
+		ptype:   "floor",
+		pnum:    0,
+		trans0:  false,
+	},
+
+	// FIXME: Needs to be in monsters, really
+	"dragon": Stamp{
+		width:   4,
+		numbers: tilerange(0x2100, 16),
+		ptype:   "base",
+		pnum:    8, // or 7 or 6
+		trans0:  true,
+	},
+}
+
+func tilerange(start int, count int) []int {
+	r := make([]int, count)
+	for i := range r {
+		r[i] = start
+		start += 1
+	}
+	return r
 }
 
 // type MobAnimFrames []int
@@ -72,7 +291,7 @@ func doitem(arg string) {
 		}
 	}
 
-	stamp := getitemstamp(itemType)
+	stamp := itemGetStamp(itemType)
 
 	height := len(stamp.numbers) / stamp.width
 	img := blankimage(8*stamp.width, 8*height)
@@ -80,7 +299,7 @@ func doitem(arg string) {
 	savetopng(opts.Output, img)
 }
 
-func getitemstamp(itemType string) *Stamp {
+func itemGetStamp(itemType string) *Stamp {
 	stamp := itemStamps[itemType]
 	fillstamp(&stamp)
 

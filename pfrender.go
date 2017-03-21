@@ -6,10 +6,10 @@ import (
 
 var testmaze = []string{
 	"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
-	"                                ",
+	"                     0          ",
 	" bbb                            ",
 	"  b         b   b               ",
-	"          bbb   bbb             ",
+	"          bbb 0 bbb             ",
 	"            b   b               ",
 	"  bbb                  bbb      ",
 	"  b b                  bbb      ",
@@ -24,7 +24,7 @@ var testmaze = []string{
 	"                                ",
 	"                                ",
 	"                                ",
-	"                                ", //20
+	"          0                     ", //20
 	"                                ",
 	"                                ",
 	"                                ",
@@ -58,6 +58,9 @@ func genpfimage() {
 			case 'b':
 				adj := checkadj8(testmaze, x, y)
 				stamp := wallGetStamp(0, adj, 3)
+				writestamptoimage(img, stamp, x*16, y*16)
+			case '0':
+				stamp := itemGetStamp("transportability")
 				writestamptoimage(img, stamp, x*16, y*16)
 			}
 		}

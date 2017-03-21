@@ -40,8 +40,8 @@ func dotile(tile int) {
 
 func main() {
 	args := gexinit()
-	// genpfimage()
-	// os.Exit(0)
+	genpfimage()
+	os.Exit(0)
 
 	switch runType {
 	case TypeNone:

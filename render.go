@@ -115,10 +115,14 @@ func getparsedtile(tilenum int) TileData {
 }
 
 // Write an 8x8 tile into a (usually) larger image
-func writetiletoimage(img *image.NRGBA, tile TileData, palette []color.Color, x int, y int) {
+func writetiletoimage(img *image.NRGBA, tile TileData, palette []color.Color, trans0 bool, x int, y int) {
 	for j := 0; j < 8; j++ {
 		for i := 0; i < 8; i++ {
 			tc := tile[j][i]
+			if tc == 0 && trans0 == true {
+				continue
+			}
+
 			c := palette[tc]
 			img.Set(x+i, y+j, c)
 			// fmt.Printf("%x", tc)
@@ -182,7 +186,7 @@ func writestamptoimage(img *image.NRGBA, stamp *Stamp, xloc int, yloc int) {
 		for x := 0; x < stamp.width; x++ {
 			// fmt.Printf("Writing to image at %d,%d\n", xloc, yloc)
 			writetiletoimage(img, stamp.data[(stamp.width*y)+x], p,
-				xloc+(x*8), yloc+(y*8))
+				stamp.trans0, xloc+(x*8), yloc+(y*8))
 		}
 	}
 
