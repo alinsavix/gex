@@ -573,7 +573,7 @@ var wallPalettes = [][]color.Color{
 
 var basePalettes = [][]color.Color{
 	{
-		IRGB{0x0},    // palette 0 - death, doors, maybe thief?
+		IRGB{0x0},    // palette 0 - death, doors, maybe thief, trans, forcefield hub
 		IRGB{0x0},    // 1
 		IRGB{0x988F}, // 2
 		IRGB{0xA99F}, // 3
@@ -590,7 +590,7 @@ var basePalettes = [][]color.Color{
 		IRGB{0xF0F0}, // 14
 		IRGB{0xFFBB}, // 15
 	}, {
-		IRGB{0x0},    // 0 // palette 1 - keys, treas, pots, food
+		IRGB{0x0},    // 0 // palette 1 - keys, treas, pots, food, acid, movable wall, pickups
 		IRGB{0x0},    // 1
 		IRGB{0x7F84}, // 2
 		IRGB{0x8F85}, // 3
@@ -607,7 +607,7 @@ var basePalettes = [][]color.Color{
 		IRGB{0xA17F}, // 14
 		IRGB{0xA00F}, // 15
 	}, {
-		IRGB{0x0},    // 0 // palette 2 - unknown
+		IRGB{0x0},    // 0 // palette 2 - ghost 1, grunt 1
 		IRGB{0x0},    // 1
 		IRGB{0x0},    // 2
 		IRGB{0x7165}, // 3
@@ -624,7 +624,7 @@ var basePalettes = [][]color.Color{
 		IRGB{0x3FF0}, // 14
 		IRGB{0x7F72}, // 15
 	}, {
-		IRGB{0x0},    // 0 // palette 3 - unknown
+		IRGB{0x0},    // 0 // palette 3 - ghost 2, grunt 2
 		IRGB{0x0},    // 1
 		IRGB{0xFFFF}, // 2
 		IRGB{0xA165}, // 3
@@ -641,7 +641,7 @@ var basePalettes = [][]color.Color{
 		IRGB{0x5FF0}, // 14
 		IRGB{0xBF72}, // 15
 	}, {
-		IRGB{0x0},    // 0 // palette 4 - transporters?
+		IRGB{0x0},    // 0 // palette 4 - ghost 3, grunt 3
 		IRGB{0x0},    // 1
 		IRGB{0xFF00}, // 2
 		IRGB{0xF165}, // 3
@@ -709,7 +709,7 @@ var basePalettes = [][]color.Color{
 		IRGB{0x8F11}, // 14
 		IRGB{0xCFFF}, // 15
 	}, {
-		IRGB{0x0},    // 0 // palette 8 - demon
+		IRGB{0x0},    // 0 // palette 8 - demon 3, IT, dragon
 		IRGB{0x0},    // 1
 		IRGB{0x5FC5}, // 2
 		IRGB{0x9F84}, // 3
@@ -726,7 +726,7 @@ var basePalettes = [][]color.Color{
 		IRGB{0xDF11}, // 14
 		IRGB{0xFFFF}, // 15
 	}, {
-		IRGB{0x0},    // 0 // palette 9 - lobber, sorc
+		IRGB{0x0},    // 0 // palette 9 - lobber1, sorc1
 		IRGB{0x0},    // 1
 		IRGB{0x0},    // 2
 		IRGB{0x0},    // 3
@@ -743,7 +743,7 @@ var basePalettes = [][]color.Color{
 		IRGB{0xBF94}, // 14
 		IRGB{0x9F11}, // 15
 	}, {
-		IRGB{0x0},    // 0 // palette 10 - lobs, sorcs
+		IRGB{0x0},    // 0 // palette 10 - lobs2, sorcs2
 		IRGB{0x0},    // 1
 		IRGB{0xFFFF}, // 2
 		IRGB{0x0},    // 3
@@ -760,7 +760,7 @@ var basePalettes = [][]color.Color{
 		IRGB{0xBF94}, // 14
 		IRGB{0xBF11}, // 15
 	}, {
-		IRGB{0x0},    // 0 // palette 11 - lobs, sorcs
+		IRGB{0x0},    // 0 // palette 11 - lobs3, sorcs3
 		IRGB{0x0},    // 1
 		IRGB{0xFF00}, // 2
 		IRGB{0x0},    // 3

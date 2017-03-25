@@ -216,6 +216,13 @@ var itemStamps = map[string]Stamp{
 		trans0:  true,
 	},
 
+	"exit": Stamp{
+		width:   2,
+		numbers: []int{0x39e, 0x39f, 0x6, 0x6},
+		ptype:   "floor",
+		pnum:    0,
+		trans0:  false,
+	},
 	"exit4": Stamp{
 		width:   2,
 		numbers: tilerange(0xcfc, 4),
@@ -225,10 +232,40 @@ var itemStamps = map[string]Stamp{
 	},
 	"exit6": Stamp{
 		width:   2,
+		numbers: tilerange(0x39e, 4),
+		ptype:   "floor",
+		pnum:    0,
+		trans0:  false,
+	},
+	"exit8": Stamp{
+		width:   2,
 		numbers: tilerange(0xdfc, 4),
 		ptype:   "floor",
 		pnum:    0,
 		trans0:  false,
+	},
+
+	"vdoor": Stamp{
+		width:   2,
+		numbers: tilerange(0x1d7c, 4),
+		ptype:   "base",
+		pnum:    0,
+		trans0:  true,
+	},
+	"hdoor": Stamp{
+		width:   2,
+		numbers: tilerange(0x1d3c, 4),
+		ptype:   "base",
+		pnum:    0,
+		trans0:  true,
+	},
+
+	"plus": Stamp{
+		width:   2,
+		numbers: tilerange(0xbfc, 4),
+		ptype:   "floor",
+		pnum:    1,
+		trans0:  true,
 	},
 
 	// FIXME: Needs to be in monsters, really
@@ -237,6 +274,118 @@ var itemStamps = map[string]Stamp{
 		numbers: tilerange(0x2100, 16),
 		ptype:   "base",
 		pnum:    8, // or 7 or 6
+		trans0:  true,
+	},
+	"generator1": Stamp{
+		width:   3,
+		numbers: tilerange(0x9c6, 9),
+		ptype:   "base",
+		pnum:    5,
+		trans0:  true,
+	},
+	"generator2": Stamp{
+		width:   3,
+		numbers: tilerange(0x9cf, 9),
+		ptype:   "base",
+		pnum:    5,
+		trans0:  true,
+	},
+	"generator3": Stamp{
+		width:   3,
+		numbers: tilerange(0x9d8, 9),
+		ptype:   "base",
+		pnum:    5,
+		trans0:  true,
+	},
+	"ghostgen1": Stamp{
+		width:   3,
+		numbers: tilerange(0x9ab, 9),
+		ptype:   "base",
+		pnum:    5,
+		trans0:  true,
+	},
+	"ghostgen2": Stamp{
+		width:   3,
+		numbers: tilerange(0x9b4, 9),
+		ptype:   "base",
+		pnum:    5,
+		trans0:  true,
+	},
+	"ghostgen3": Stamp{
+		width:   3,
+		numbers: tilerange(0x9bd, 9),
+		ptype:   "base",
+		pnum:    5,
+		trans0:  true,
+	},
+
+	"ghost": Stamp{
+		width:   3,
+		numbers: tilerange(0x800, 9),
+		ptype:   "base",
+		pnum:    4,
+	},
+	"grunt": Stamp{
+		width:   3,
+		numbers: tilerange(0x9e1, 9),
+		ptype:   "base",
+		pnum:    4,
+		trans0:  true,
+	},
+	"demon": Stamp{
+		width:   3,
+		numbers: tilerange(0x183f, 9),
+		ptype:   "base",
+		pnum:    8,
+		trans0:  true,
+	},
+	"lobber": Stamp{
+		width:   3,
+		numbers: tilerange(0x1b57, 9),
+		ptype:   "base",
+		pnum:    11,
+		trans0:  true,
+	},
+	"sorcerer": Stamp{
+		width:   3,
+		numbers: tilerange(0x13a2, 9),
+		ptype:   "base",
+		pnum:    11,
+		trans0:  true,
+	},
+	"auxgrunt": Stamp{
+		width:   3,
+		numbers: tilerange(0x9e1, 9),
+		ptype:   "base",
+		pnum:    4,
+		trans0:  true,
+	},
+	"death": Stamp{
+		width:   3,
+		numbers: tilerange(0x1a75, 9),
+		ptype:   "base",
+		pnum:    0,
+		trans0:  true,
+	},
+	"acid": Stamp{
+		width:   3,
+		numbers: tilerange(0x2300, 9),
+		ptype:   "base",
+		pnum:    1,
+		trans0:  true,
+	},
+	"supersorc": Stamp{
+		width:   3,
+		numbers: tilerange(0x13a2, 9),
+		ptype:   "base",
+		pnum:    11,
+		trans0:  true,
+	},
+	"it": Stamp{
+		width:   3,
+		numbers: tilerange(0x2600, 9),
+		ptype:   "base",
+		pnum:    8,
 		trans0:  true,
 	},
 }
