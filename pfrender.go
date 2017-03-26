@@ -116,74 +116,6 @@ var maze12 = []int{
 	0x3B, 0x0,
 }
 
-// maze object ids (names matching names in IDA)
-const (
-	MAZEOBJ_TILE_FLOOR = iota
-	MAZEOBJ_TILE_STUN
-	MAZEOBJ_WALL_REGULAR
-	MAZEOBJ_WALL_MOVABLE
-	MAZEOBJ_WALL_SECRET
-	MAZEOBJ_WALL_DESTRUCTABLE
-	MAZEOBJ_WALL_RANDOM
-	MAZEOBJ_WALL_TRAPCYC1
-	MAZEOBJ_WALL_TRAPCYC2
-	MAZEOBJ_WALL_TRAPCYC3
-	MAZEOBJ_TILE_TRAP1
-	MAZEOBJ_TILE_TRAP2
-	MAZEOBJ_TILE_TRAP3
-	MAZEOBJ_DOOR_HORIZ
-	MAZEOBJ_DOOR_VERT
-	MAZEOBJ_PLAYERSTART
-	MAZEOBJ_EXIT
-	MAZEOBJ_EXITTO6
-	MAZEOBJ_MONST_GHOST
-	MAZEOBJ_MONST_GRUNT
-	MAZEOBJ_MONST_DEMON
-	MAZEOBJ_MONST_LOBBER
-	MAZEOBJ_MONST_SORC
-	MAZEOBJ_MONST_AUX_GRUNT
-	MAZEOBJ_MONST_DEATH
-	MAZEOBJ_MONST_ACID
-	MAZEOBJ_MONST_SUPERSORC
-	MAZEOBJ_MONST_IT
-	MAZEOBJ_GEN_GHOST1
-	MAZEOBJ_GEN_GHOST2
-	MAZEOBJ_GEN_GHOS3
-	MAZEOBJ_GEN_GRUNT1
-	MAZEOBJ_GEN_GRUNT2
-	MAZEOBJ_GEN_GRUNT3
-	MAZEOBJ_GEN_DEMON1
-	MAZEOBJ_GEN_DEMON2
-	MAZEOBJ_GEN_DEMON3
-	MAZEOBJ_GEN_LOBBER1
-	MAZEOBJ_GEN_LOBBER2
-	MAZEOBJ_GEN_LOBBER3
-	MAZEOBJ_GEN_SORC1
-	MAZEOBJ_GEN_SORC2
-	MAZEOBJ_GEN_SORC3
-	MAZEOBJ_GEN_AUX_GRUNT1
-	MAZEOBJ_GEN_AUX_GRUNT2
-	MAZEOBJ_GEN_AUX_GRUNT3
-	MAZEOBJ_TREASURE
-	MAZEOBJ_TREASURE_LOCKED
-	MAZEOBJ_TREASURE_BAG
-	MAZEOBJ_FOOD_DESTRUCTABLE
-	MAZEOBJ_FOOD_INVULN
-	MAZEOBJ_POT_DESTRUCTABLE
-	MAZEOBJ_POT_INVULN
-	MAZEOBJ_KEY
-	MAZEOBJ_POWER_INVIS
-	MAZEOBJ_POWER_REPULSE
-	MAZEOBJ_POWER_REFLECT
-	MAZEOBJ_POWER_TRANSPORT
-	MAZEOBJ_POWER_SUPERSHOT
-	MAZEOBJ_POWER_INVULN
-	MAZEOBJ_MONST_DRAGON
-	MAZEOBJ_HIDDENPOT
-	MAZEOBJ_TRANSPORTER
-	MAZEOBJ_FORCEFIELDHUB
-)
-
 var typeArr = []int{
 	' ', 'a', 'b', 'c', 'd', 'e' /* 'f', 'g', 'h', 'i', */, 'b', 'b', 'b', 'b',
 	'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
@@ -215,7 +147,20 @@ func index2xy(index int) (x int, y int) {
 	return
 }
 
-type Maze *[32][32]int
+type MazeData [32][32]int
+
+type Maze struct {
+	data         MazeData
+	secret       int
+	flags1       int
+	flags2       int
+	flags3       int
+	flags4       int
+	wallpattern  int
+	wallcolor    int
+	floorpattern int
+	floorcolor   int
+}
 
 // Is a maze object a wall?
 func iswall(t int) bool {
@@ -237,7 +182,7 @@ func isspecialfloor(t int) bool {
 }
 
 // FIXME: needs to handle vflip and hflip
-func expand(maze Maze, location int, t int, count int) int {
+func expand(maze *Maze, location int, t int, count int) int {
 	if t == MAZEOBJ_TILE_FLOOR {
 		return (location + count)
 	}
@@ -245,24 +190,24 @@ func expand(maze Maze, location int, t int, count int) int {
 	for i := 0; i < count; i++ {
 		if iswall(t) {
 			x, y := index2xy(location + i)
-			maze[y][x] = getbytefortype(t)
+			maze.data[y][x] = getbytefortype(t)
 
 		} else if isspecialfloor(t) {
 			x, y := index2xy(location + i)
-			maze[y][x] = getbytefortype(t)
+			maze.data[y][x] = getbytefortype(t)
 		} else {
 			// things here will need an offset to be completely visible
 			/* if t == MAZEOBJ_MONST_DRAGON */
 
 			x, y := index2xy(location + i)
-			maze[y][x] = getbytefortype(t)
+			maze.data[y][x] = getbytefortype(t)
 		}
 	}
 	return location + count
 }
 
 // FIXME: Needs to handle vflip and hflip
-func vexpand(maze Maze, location int, t int, count int) int {
+func vexpand(maze *Maze, location int, t int, count int) int {
 	if t == MAZEOBJ_TILE_FLOOR {
 		return location + 1
 	}
@@ -270,14 +215,14 @@ func vexpand(maze Maze, location int, t int, count int) int {
 	for i := 0; i < count; i++ {
 		if iswall(t) {
 			x, y := index2xy(location - (i * 32))
-			maze[y][x] = getbytefortype(t)
+			maze.data[y][x] = getbytefortype(t)
 		} else if isspecialfloor(t) {
 			x, y := index2xy(location - (i * 32))
-			maze[y][x] = getbytefortype(t)
+			maze.data[y][x] = getbytefortype(t)
 		} else {
 			// things here will need a position adjustment to be visible
 			x, y := index2xy(location - (i * 32))
-			maze[y][x] = getbytefortype(t)
+			maze.data[y][x] = getbytefortype(t)
 		}
 	}
 
@@ -285,10 +230,10 @@ func vexpand(maze Maze, location int, t int, count int) int {
 }
 
 // Outoput is maze[y][x]
-func mazeDecompress(compressed []int) Maze {
+func mazeDecompress(compressed []int) *Maze {
 	rand.Seed(5)
-	var m [32][32]int
-	var maze = Maze(&m)
+	//	var m [32][32]int
+	var maze = &Maze{}
 
 	htype1 := compressed[7]  // horiz type 1
 	htype2 := compressed[8]  // horiz type 2
@@ -299,7 +244,7 @@ func mazeDecompress(compressed []int) Maze {
 
 	// Fill in first row with walls, always
 	for i := 0; i < 32; i++ {
-		maze[0][i] = 'b'
+		maze.data[0][i] = 'b'
 	}
 
 	// Unpack here starts
@@ -521,15 +466,15 @@ func genpfimage() {
 // diagonal wall += 8
 // vertical wall += 16
 
-func whatis(maze Maze, x int, y int) int {
+func whatis(maze *Maze, x int, y int) int {
 	if x < 0 || y < 0 || x >= 32 || y >= 32 {
 		return 0
 	}
 
-	return maze[y][x]
+	return maze.data[y][x]
 }
 
-func checkadj3(maze Maze, x int, y int) int {
+func checkadj3(maze *Maze, x int, y int) int {
 	adj := 0
 
 	if whatis(maze, x-1, y) == 'b' {
@@ -557,7 +502,7 @@ func checkadj3(maze Maze, x int, y int) int {
 //
 // FIXME: Our sense of up/down here is probably confused
 
-func checkadj8(maze Maze, x int, y int) int {
+func checkadj8(maze *Maze, x int, y int) int {
 	adj := 0
 
 	if whatis(maze, x-1, y-1) == 'b' {
