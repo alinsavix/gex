@@ -196,6 +196,13 @@ var itemStamps = map[string]Stamp{
 		pnum:    1,
 		trans0:  true,
 	},
+	"goldbag": Stamp{
+		width:   3,
+		numbers: tilerange(0x9a2, 9),
+		ptype:   "base",
+		pnum:    1,
+		trans0:  true,
+	},
 
 	// FIXME: wrong palette
 	"tport": Stamp{

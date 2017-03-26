@@ -133,6 +133,7 @@ func genpfimage() {
 		for x := 0; x < 32; x++ {
 			var stamp *Stamp
 
+			// We should do better
 			switch whatis(maze, x, y) {
 			case 'b':
 				adj := checkadj8(maze, x, y)
@@ -166,7 +167,6 @@ func genpfimage() {
 				stamp = itemGetStamp("exit6")
 			case 'r':
 				stamp = itemGetStamp("ghost")
-
 			case 's':
 				stamp = itemGetStamp("grunt")
 			case 't':
@@ -177,7 +177,6 @@ func genpfimage() {
 				stamp = itemGetStamp("sorcerer")
 			case 'w':
 				stamp = itemGetStamp("auxgrunt")
-
 			case 'x':
 				stamp = itemGetStamp("death")
 			case 'y':
@@ -194,7 +193,6 @@ func genpfimage() {
 				stamp = itemGetStamp("ghostgen3")
 			case 'E':
 				stamp = itemGetStamp("generator1")
-
 			case 'F':
 				stamp = itemGetStamp("generator2")
 			case 'G':
@@ -223,20 +221,18 @@ func genpfimage() {
 				stamp = itemGetStamp("generator2")
 			case 'S':
 				stamp = itemGetStamp("generator3")
-
 			case 'T':
 				stamp = itemGetStamp("treasure")
 			case 'U':
 				stamp = itemGetStamp("treasurelocked")
 			case 'V':
-			// stamp = itemGetStamp("goldbag")
+				stamp = itemGetStamp("goldbag")
 			case 'W':
 				stamp = itemGetStamp("mfood")
 			case 'X':
 				stamp = itemGetStamp("ifood1")
 			case 'Y':
 				stamp = itemGetStamp("potion")
-
 			case 'Z':
 				stamp = itemGetStamp("ipotion")
 			}
