@@ -116,16 +116,17 @@ var maze12 = []int{
 }
 
 func genpfimage() {
-	img := blankimage(8*2*32, 8*2*32) // 8 pixels * 2 tiles * 32 stamps
+	// 8 pixels * 2 tiles * 32 stamps, plus extra space on edges
+	img := blankimage(8*2*32+32, 8*2*32+32)
 
-	//	spew.Dump("Stamp: %#v\n", stamp)
 	// mazes will always be the same size, so just use constants
 	maze := mazeDecompress(maze0)
+	// spew.Dump(maze)
 
 	for y := 0; y < 32; y++ {
 		for x := 0; x < 32; x++ {
 			stamp := floorGetStamp(maze.floorpattern, checkadj3(maze, x, y)+rand.Intn(4), maze.floorcolor)
-			writestamptoimage(img, stamp, x*16, y*16)
+			writestamptoimage(img, stamp, x*16+16, y*16+16)
 		}
 	}
 
@@ -135,6 +136,9 @@ func genpfimage() {
 
 			// We should do better
 			switch whatis(maze, x, y) {
+			// case ' ':
+			// 	adj := checkadj3(maze, x, y) + rand.Intn(4)
+			// 	stamp = floorGetStamp(maze.floorpattern, adj, maze.floorcolor)
 			case 'b':
 				adj := checkadj8(maze, x, y)
 				stamp = wallGetStamp(maze.wallpattern, adj, maze.wallcolor)
@@ -154,7 +158,6 @@ func genpfimage() {
 				stamp = itemGetStamp("invuln")
 			case '7':
 				stamp = itemGetStamp("dragon")
-
 			case 'm':
 				stamp = itemGetStamp("hdoor")
 			case 'n':
@@ -238,7 +241,7 @@ func genpfimage() {
 			}
 
 			if stamp != nil {
-				writestamptoimage(img, stamp, x*16, y*16)
+				writestamptoimage(img, stamp, x*16+16, y*16+16)
 			}
 		}
 	}
@@ -253,11 +256,27 @@ func genpfimage() {
 // vertical wall += 16
 
 func whatis(maze *Maze, x int, y int) int {
+	if (maze.flags4 & LFLAG4_WRAP_H) != 0 {
+		if x < 0 {
+			x = 32 + x
+		} else {
+			x = x % 32
+		}
+	}
+
+	if (maze.flags4 & LFLAG4_WRAP_V) != 0 {
+		if x < 0 {
+			x = 32 + x
+		} else {
+			y = y % 32
+		}
+	}
+
 	if x < 0 || y < 0 || x >= 32 || y >= 32 {
 		return 0
 	}
 
-	return maze.data[y][x]
+	return maze.data[xy{x, y}]
 }
 
 func checkadj3(maze *Maze, x int, y int) int {

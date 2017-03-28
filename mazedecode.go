@@ -32,7 +32,9 @@ func index2xy(index int) (x int, y int) {
 	return
 }
 
-type MazeData [32][32]int
+type xy struct{ x, y int }
+
+type MazeData map[xy]int
 
 type Maze struct {
 	data         MazeData
@@ -75,17 +77,17 @@ func expand(maze *Maze, location int, t int, count int) int {
 	for i := 0; i < count; i++ {
 		if iswall(t) {
 			x, y := index2xy(location + i)
-			maze.data[y][x] = getbytefortype(t)
+			maze.data[xy{x, y}] = getbytefortype(t)
 
 		} else if isspecialfloor(t) {
 			x, y := index2xy(location + i)
-			maze.data[y][x] = getbytefortype(t)
+			maze.data[xy{x, y}] = getbytefortype(t)
 		} else {
 			// things here will need an offset to be completely visible
 			/* if t == MAZEOBJ_MONST_DRAGON */
 
 			x, y := index2xy(location + i)
-			maze.data[y][x] = getbytefortype(t)
+			maze.data[xy{x, y}] = getbytefortype(t)
 		}
 	}
 	return location + count
@@ -100,14 +102,14 @@ func vexpand(maze *Maze, location int, t int, count int) int {
 	for i := 0; i < count; i++ {
 		if iswall(t) {
 			x, y := index2xy(location - (i * 32))
-			maze.data[y][x] = getbytefortype(t)
+			maze.data[xy{x, y}] = getbytefortype(t)
 		} else if isspecialfloor(t) {
 			x, y := index2xy(location - (i * 32))
-			maze.data[y][x] = getbytefortype(t)
+			maze.data[xy{x, y}] = getbytefortype(t)
 		} else {
 			// things here will need a position adjustment to be visible
 			x, y := index2xy(location - (i * 32))
-			maze.data[y][x] = getbytefortype(t)
+			maze.data[xy{x, y}] = getbytefortype(t)
 		}
 	}
 
@@ -119,6 +121,7 @@ func mazeDecompress(compressed []int) *Maze {
 	rand.Seed(5)
 	//  var m [32][32]int
 	var maze = &Maze{}
+	maze.data = make(map[xy]int)
 
 	maze.secret = compressed[0] & 0x1f
 
@@ -141,7 +144,7 @@ func mazeDecompress(compressed []int) *Maze {
 
 	// Fill in first row with walls, always
 	for i := 0; i < 32; i++ {
-		maze.data[0][i] = 'b'
+		maze.data[xy{i, 0}] = 'b'
 	}
 
 	// Unpack here starts
