@@ -5,19 +5,20 @@ import (
 	"math/rand"
 )
 
-var typeArr = []int{
-	' ', 'a', 'b', 'c', 'd', 'e' /* 'f', 'g', 'h', 'i', */, 'b', 'b', 'b', 'b',
-	'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
-	't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C',
-	'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-	'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
-	'X', 'Y', 'Z',
-	'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-	'+',
-}
+// var typeArr = []int{
+// 	' ', 'a', 'b', 'c', 'd', 'e' /* 'f', 'g', 'h', 'i', */, 'b', 'b', 'b', 'b',
+// 	'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
+// 	't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C',
+// 	'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+// 	'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
+// 	'X', 'Y', 'Z',
+// 	'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+// 	'+',
+// }
 
 func getbytefortype(t int) int {
-	return typeArr[t]
+	// return typeArr[t]
+	return t
 }
 
 func index2xy(index int) (x int, y int) {
@@ -107,7 +108,7 @@ func vexpand(maze *Maze, location int, t int, count int) int {
 			x, y := index2xy(location - (i * 32))
 			maze.data[xy{x, y}] = getbytefortype(t)
 		} else {
-			// things here will need a position adjustment to be visible
+			// things here will need a position adjustment to be fully visible
 			x, y := index2xy(location - (i * 32))
 			maze.data[xy{x, y}] = getbytefortype(t)
 		}
@@ -144,7 +145,7 @@ func mazeDecompress(compressed []int) *Maze {
 
 	// Fill in first row with walls, always
 	for i := 0; i < 32; i++ {
-		maze.data[xy{i, 0}] = 'b'
+		maze.data[xy{i, 0}] = MAZEOBJ_WALL_REGULAR
 	}
 
 	// Unpack here starts

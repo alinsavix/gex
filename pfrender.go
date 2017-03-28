@@ -136,107 +136,111 @@ func genpfimage() {
 
 			// We should do better
 			switch whatis(maze, x, y) {
-			// case ' ':
-			// 	adj := checkadj3(maze, x, y) + rand.Intn(4)
-			// 	stamp = floorGetStamp(maze.floorpattern, adj, maze.floorcolor)
-			case 'b':
+			case MAZEOBJ_TILE_FLOOR:
+				adj := checkadj3(maze, x, y) + rand.Intn(4)
+				stamp = floorGetStamp(maze.floorpattern, adj, maze.floorcolor)
+			case MAZEOBJ_WALL_REGULAR:
 				adj := checkadj8(maze, x, y)
 				stamp = wallGetStamp(maze.wallpattern, adj, maze.wallcolor)
-			case '0':
+			case MAZEOBJ_KEY:
 				stamp = itemGetStamp("key")
-			case '1':
+			case MAZEOBJ_POWER_INVIS:
 				stamp = itemGetStamp("invis")
-			case '2':
+			case MAZEOBJ_POWER_REPULSE:
 				stamp = itemGetStamp("repulse")
-			case '3':
+			case MAZEOBJ_POWER_REFLECT:
 				stamp = itemGetStamp("reflect")
-			case '4':
+			case MAZEOBJ_POWER_TRANSPORT:
 				stamp = itemGetStamp("transportability")
-			case '5':
+			case MAZEOBJ_POWER_SUPERSHOT:
 				stamp = itemGetStamp("supershot")
-			case '6':
+			case MAZEOBJ_POWER_INVULN:
 				stamp = itemGetStamp("invuln")
-			case '7':
+			case MAZEOBJ_MONST_DRAGON:
 				stamp = itemGetStamp("dragon")
-			case 'm':
+			case MAZEOBJ_DOOR_HORIZ:
 				stamp = itemGetStamp("hdoor")
-			case 'n':
+			case MAZEOBJ_DOOR_VERT:
 				stamp = itemGetStamp("vdoor")
-			case 'o':
+			case MAZEOBJ_HIDDENPOT:
 				stamp = itemGetStamp("plus")
-			case 'p':
+			case MAZEOBJ_EXIT:
 				stamp = itemGetStamp("exit")
-			case 'q':
+			case MAZEOBJ_EXITTO6:
 				stamp = itemGetStamp("exit6")
-			case 'r':
+			case MAZEOBJ_MONST_GHOST:
 				stamp = itemGetStamp("ghost")
-			case 's':
+			case MAZEOBJ_MONST_GRUNT:
 				stamp = itemGetStamp("grunt")
-			case 't':
+			case MAZEOBJ_MONST_DEMON:
 				stamp = itemGetStamp("demon")
-			case 'u':
+			case MAZEOBJ_MONST_LOBBER:
 				stamp = itemGetStamp("lobber")
-			case 'v':
+			case MAZEOBJ_MONST_SORC:
 				stamp = itemGetStamp("sorcerer")
-			case 'w':
+			case MAZEOBJ_MONST_AUX_GRUNT:
 				stamp = itemGetStamp("auxgrunt")
-			case 'x':
+			case MAZEOBJ_MONST_DEATH:
 				stamp = itemGetStamp("death")
-			case 'y':
+			case MAZEOBJ_MONST_ACID:
 				stamp = itemGetStamp("acid")
-			case 'z':
+			case MAZEOBJ_MONST_SUPERSORC:
 				stamp = itemGetStamp("supersorc")
-			case 'A':
+			case MAZEOBJ_MONST_IT:
 				stamp = itemGetStamp("it")
-			case 'B':
+			case MAZEOBJ_GEN_GHOST1:
 				stamp = itemGetStamp("ghostgen1")
-			case 'C':
+			case MAZEOBJ_GEN_GHOST2:
 				stamp = itemGetStamp("ghostgen2")
-			case 'D':
+			case MAZEOBJ_GEN_GHOST3:
 				stamp = itemGetStamp("ghostgen3")
-			case 'E':
+
+			case MAZEOBJ_GEN_GRUNT1:
+				fallthrough
+			case MAZEOBJ_GEN_DEMON1:
+				fallthrough
+			case MAZEOBJ_GEN_LOBBER1:
+				fallthrough
+			case MAZEOBJ_GEN_SORC1:
+				fallthrough
+			case MAZEOBJ_GEN_AUX_GRUNT1:
 				stamp = itemGetStamp("generator1")
-			case 'F':
+
+			case MAZEOBJ_GEN_GRUNT2:
+				fallthrough
+			case MAZEOBJ_GEN_DEMON2:
+				fallthrough
+			case MAZEOBJ_GEN_LOBBER2:
+				fallthrough
+			case MAZEOBJ_GEN_SORC2:
+				fallthrough
+			case MAZEOBJ_GEN_AUX_GRUNT2:
 				stamp = itemGetStamp("generator2")
-			case 'G':
+
+			case MAZEOBJ_GEN_GRUNT3:
+				fallthrough
+			case MAZEOBJ_GEN_DEMON3:
+				fallthrough
+			case MAZEOBJ_GEN_LOBBER3:
+				fallthrough
+			case MAZEOBJ_GEN_SORC3:
+				fallthrough
+			case MAZEOBJ_GEN_AUX_GRUNT3:
 				stamp = itemGetStamp("generator3")
-			case 'H':
-				stamp = itemGetStamp("generator1")
-			case 'I':
-				stamp = itemGetStamp("generator2")
-			case 'J':
-				stamp = itemGetStamp("generator3")
-			case 'K':
-				stamp = itemGetStamp("generator1")
-			case 'L':
-				stamp = itemGetStamp("generator2")
-			case 'M':
-				stamp = itemGetStamp("generator3")
-			case 'N':
-				stamp = itemGetStamp("generator1")
-			case 'O':
-				stamp = itemGetStamp("generator2")
-			case 'P':
-				stamp = itemGetStamp("generator3")
-			case 'Q':
-				stamp = itemGetStamp("generator1")
-			case 'R':
-				stamp = itemGetStamp("generator2")
-			case 'S':
-				stamp = itemGetStamp("generator3")
-			case 'T':
+
+			case MAZEOBJ_TREASURE:
 				stamp = itemGetStamp("treasure")
-			case 'U':
+			case MAZEOBJ_TREASURE_LOCKED:
 				stamp = itemGetStamp("treasurelocked")
-			case 'V':
+			case MAZEOBJ_TREASURE_BAG:
 				stamp = itemGetStamp("goldbag")
-			case 'W':
+			case MAZEOBJ_FOOD_DESTRUCTABLE:
 				stamp = itemGetStamp("mfood")
-			case 'X':
+			case MAZEOBJ_FOOD_INVULN:
 				stamp = itemGetStamp("ifood1")
-			case 'Y':
+			case MAZEOBJ_POT_DESTRUCTABLE:
 				stamp = itemGetStamp("potion")
-			case 'Z':
+			case MAZEOBJ_POT_INVULN:
 				stamp = itemGetStamp("ipotion")
 			}
 
@@ -282,15 +286,15 @@ func whatis(maze *Maze, x int, y int) int {
 func checkadj3(maze *Maze, x int, y int) int {
 	adj := 0
 
-	if whatis(maze, x-1, y) == 'b' {
+	if whatis(maze, x-1, y) == MAZEOBJ_WALL_REGULAR {
 		adj += 4
 	}
 
-	if whatis(maze, x, y+1) == 'b' {
+	if whatis(maze, x, y+1) == MAZEOBJ_WALL_REGULAR {
 		adj += 16
 	}
 
-	if whatis(maze, x-1, y+1) == 'b' {
+	if whatis(maze, x-1, y+1) == MAZEOBJ_WALL_REGULAR {
 		adj += 8
 	}
 
@@ -310,28 +314,28 @@ func checkadj3(maze *Maze, x int, y int) int {
 func checkadj8(maze *Maze, x int, y int) int {
 	adj := 0
 
-	if whatis(maze, x-1, y-1) == 'b' {
+	if whatis(maze, x-1, y-1) == MAZEOBJ_WALL_REGULAR {
 		adj += 0x01
 	}
-	if whatis(maze, x, y-1) == 'b' {
+	if whatis(maze, x, y-1) == MAZEOBJ_WALL_REGULAR {
 		adj += 0x02
 	}
-	if whatis(maze, x+1, y-1) == 'b' {
+	if whatis(maze, x+1, y-1) == MAZEOBJ_WALL_REGULAR {
 		adj += 0x04
 	}
-	if whatis(maze, x-1, y) == 'b' {
+	if whatis(maze, x-1, y) == MAZEOBJ_WALL_REGULAR {
 		adj += 0x08
 	}
-	if whatis(maze, x+1, y) == 'b' {
+	if whatis(maze, x+1, y) == MAZEOBJ_WALL_REGULAR {
 		adj += 0x010
 	}
-	if whatis(maze, x-1, y+1) == 'b' {
+	if whatis(maze, x-1, y+1) == MAZEOBJ_WALL_REGULAR {
 		adj += 0x20
 	}
-	if whatis(maze, x, y+1) == 'b' {
+	if whatis(maze, x, y+1) == MAZEOBJ_WALL_REGULAR {
 		adj += 0x40
 	}
-	if whatis(maze, x+1, y+1) == 'b' {
+	if whatis(maze, x+1, y+1) == MAZEOBJ_WALL_REGULAR {
 		adj += 0x80
 	}
 
