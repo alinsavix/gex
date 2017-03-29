@@ -18,6 +18,7 @@ var opts struct {
 	Monster string `short:"m" long:"monster" description:"Monster to render"`
 	Floor   int    `short:"f" long:"floor" default:"-1" base:"16" description:"Floor stamp to render (in hex)"`
 	Wall    int    `short:"w" long:"wall" default:"-1" base:"16" description:"Wall stamp to render (in hex)"`
+	Verbose bool   `short:"v" long:"verbose"`
 }
 
 const (
@@ -26,6 +27,7 @@ const (
 	TypeFloor
 	TypeWall
 	TypeItem
+	TypeMaze
 )
 
 var runType = TypeNone
@@ -34,6 +36,7 @@ var reMonsters = regexp.MustCompile(`^(ghost)`)
 var reFloor = regexp.MustCompile(`^(floor)`)
 var reWall = regexp.MustCompile(`^(wall)`)
 var reItem = regexp.MustCompile(`^(item)`)
+var reMaze = regexp.MustCompile(`^(maze)`)
 
 func gexinit() []string {
 	args, err := flags.Parse(&opts)
@@ -52,6 +55,8 @@ func gexinit() []string {
 			runType = TypeWall
 		case reItem.MatchString(args[0]):
 			runType = TypeItem
+		case reMaze.MatchString(args[0]):
+			runType = TypeMaze
 		}
 	}
 

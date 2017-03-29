@@ -43,8 +43,8 @@ func main() {
 	//	genpfimage()
 	//	os.Exit(0)
 	// slapsticGetOffset(1)
-	genpfimage(slapsticReadMaze(112))
-	os.Exit(0)
+	//genpfimage(slapsticReadMaze(112))
+	//os.Exit(0)
 
 	switch runType {
 	case TypeNone:
@@ -62,6 +62,8 @@ func main() {
 		domonster(args[0])
 	case TypeItem:
 		doitem(args[0])
+	case TypeMaze:
+		domaze(args[0])
 	}
 
 	// if opts.Floor >= 0 {

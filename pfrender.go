@@ -99,12 +99,12 @@ func copyedges(maze *Maze) {
 	}
 }
 
-func genpfimage(mazedata []int) {
+func genpfimage(maze *Maze) {
 	// 8 pixels * 2 tiles * 32 stamps, plus extra space on edges
 	img := blankimage(8*2*32+32, 8*2*32+32)
 
 	// mazes will always be the same size, so just use constants
-	maze := mazeDecompress(mazedata)
+	// maze := mazeDecompress(mazedata)
 	copyedges(maze)
 
 	for y := 0; y < 32; y++ {
