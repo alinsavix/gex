@@ -4,41 +4,6 @@ import (
 	"math/rand"
 )
 
-var ztestmaze = []string{
-	"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", // 1
-	"                     0          ",
-	" bbb                            ",
-	"  b         b   b               ",
-	"          bbb 0 bbb             ",
-	"            b   b               ",
-	"  bbb                  bbb      ",
-	"  b b                  bbb      ",
-	"  bbb                  bbb      ",
-	"           b       b            ", // 10
-	"            b      b    bbbbb   ",
-	"             b     b            ",
-	"      b                         ",
-	"     b                          ",
-	"    b                           ",
-	"             c                  ",
-	"                                ",
-	"                                ",
-	"                                ",
-	"   1    2    3    4    5    6   ", // 20
-	"                                ",
-	"   7              p    q    r   ",
-	"                                ",
-	"   s    t    u    v    w    x   ",
-	"                                ",
-	"   y    z    A    B    C    D   ",
-	"                                ",
-	"   E    F    G    T    U    V   ",
-	"                                ",
-	"   W    X    Y    Z    0        ", // 30
-	"                                ",
-	"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
-}
-
 var maze0 = []int{
 	0x0,  // secret trick
 	0x0,  // flags 1
@@ -134,12 +99,12 @@ func copyedges(maze *Maze) {
 	}
 }
 
-func genpfimage() {
+func genpfimage(mazedata []int) {
 	// 8 pixels * 2 tiles * 32 stamps, plus extra space on edges
 	img := blankimage(8*2*32+32, 8*2*32+32)
 
 	// mazes will always be the same size, so just use constants
-	maze := mazeDecompress(maze0)
+	maze := mazeDecompress(mazedata)
 	copyedges(maze)
 
 	for y := 0; y < 32; y++ {

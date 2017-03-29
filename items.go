@@ -341,6 +341,7 @@ var itemStamps = map[string]Stamp{
 		numbers: tilerange(0x800, 9),
 		ptype:   "base",
 		pnum:    4,
+		trans0:  true,
 	},
 	"grunt": Stamp{
 		width:   3,

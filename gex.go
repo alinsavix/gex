@@ -40,7 +40,10 @@ func dotile(tile int) {
 
 func main() {
 	args := gexinit()
-	genpfimage()
+	//	genpfimage()
+	//	os.Exit(0)
+	// slapsticGetOffset(1)
+	genpfimage(slapsticReadMaze(112))
 	os.Exit(0)
 
 	switch runType {

@@ -5,7 +5,7 @@ type Romset struct {
 	roms   []string
 }
 
-var roms = [][]string{
+var tileRoms = [][]string{
 	{
 		"ROMs/136043-1111.1a",
 		"ROMs/136043-1113.1l",
@@ -26,26 +26,26 @@ var roms = [][]string{
 	},
 }
 
-var romSets = []Romset{
+var tileRomSets = []Romset{
 	{
 		offset: 0x800,
-		roms:   roms[0],
+		roms:   tileRoms[0],
 	},
 	{
 		offset: 0x0,
-		roms:   roms[0],
+		roms:   tileRoms[0],
 	},
 	{
 		offset: 0x800,
-		roms:   roms[1],
+		roms:   tileRoms[1],
 	},
 	{
 		offset: 0x0,
-		roms:   roms[1],
+		roms:   tileRoms[1],
 	},
 	{
 		offset: 0x0,
-		roms:   roms[2],
+		roms:   tileRoms[2],
 	},
 }
 
@@ -54,8 +54,8 @@ var romSets = []Romset{
 // that should be contained in the above structs, but isn't
 func getromset(tilenum int) (int, []string) {
 	whichbank := tilenum / 0x800
-	actualtile := (tilenum % 0x800) + romSets[whichbank].offset
+	actualtile := (tilenum % 0x800) + tileRomSets[whichbank].offset
 	// fmt.Printf("tile: 0x%x   romset: %s\n", actualtile, romSets[whichbank].roms)
 
-	return actualtile, romSets[whichbank].roms
+	return actualtile, tileRomSets[whichbank].roms
 }
