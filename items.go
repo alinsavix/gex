@@ -15,6 +15,14 @@ import (
 // }
 
 var itemStamps = map[string]Stamp{
+	"blank": Stamp{
+		width:   2,
+		numbers: []int{0, 0, 0, 0},
+		ptype:   "base",
+		pnum:    0,
+		trans0:  false,
+	},
+
 	"key": Stamp{
 		width:   2,
 		numbers: tilerange(0xafc, 4),
@@ -395,6 +403,39 @@ var itemStamps = map[string]Stamp{
 		numbers: tilerange(0x2600, 9),
 		ptype:   "base",
 		pnum:    8,
+		trans0:  true,
+	},
+
+	"arrowleft": Stamp{
+		width: 2,
+		// numbers: tilerange(0x1c8f, 4),
+		numbers: []int{0, 0x1c8f, 0, 0x1c91},
+		ptype:   "elf",
+		pnum:    1,
+		trans0:  true,
+	},
+	"arrowright": Stamp{
+		width: 2,
+		// numbers: tilerange(0x1c7c, 4),
+		numbers: []int{0x1c7d, 0, 0x1c7f, 0},
+		ptype:   "elf",
+		pnum:    1,
+		trans0:  true,
+	},
+	"arrowup": Stamp{
+		width: 2,
+		// numbers: tilerange(0x1c74, 4),
+		numbers: []int{0, 0, 0x1c74, 0x1c75},
+		ptype:   "elf",
+		pnum:    1,
+		trans0:  true,
+	},
+	"arrowdown": Stamp{
+		width: 2,
+		// numbers: tilerange(0x1c84, 4),
+		numbers: []int{0x1c86, 0x1c87, 0, 0},
+		ptype:   "elf",
+		pnum:    1,
 		trans0:  true,
 	},
 }

@@ -115,13 +115,32 @@ var maze12 = []int{
 	0x3B, 0x0,
 }
 
+// Okay, so we have a maze. We need to adjust the edges to take care of
+// wrap or no wrap.
+//
+// If we're not wrapping in a direction, we need to duplicate the left and
+// top walls, so that the maze will be enclosed.
+func copyedges(maze *Maze) {
+	for i := 0; i <= 32; i++ {
+		if (maze.flags4 & LFLAG4_WRAP_H) == 0 {
+			maze.data[xy{32, i}] = maze.data[xy{0, i}]
+		}
+	}
+
+	for i := 0; i <= 32; i++ {
+		if (maze.flags4 & LFLAG4_WRAP_V) == 0 {
+			maze.data[xy{i, 32}] = maze.data[xy{i, 0}]
+		}
+	}
+}
+
 func genpfimage() {
 	// 8 pixels * 2 tiles * 32 stamps, plus extra space on edges
 	img := blankimage(8*2*32+32, 8*2*32+32)
 
 	// mazes will always be the same size, so just use constants
 	maze := mazeDecompress(maze0)
-	// spew.Dump(maze)
+	copyedges(maze)
 
 	for y := 0; y < 32; y++ {
 		for x := 0; x < 32; x++ {
@@ -130,15 +149,25 @@ func genpfimage() {
 		}
 	}
 
-	for y := 0; y < 32; y++ {
-		for x := 0; x < 32; x++ {
+	lastx := 32
+	if maze.flags4&LFLAG4_WRAP_H > 0 {
+		lastx = 31
+	}
+
+	lasty := 32
+	if maze.flags4&LFLAG4_WRAP_V > 0 {
+		lasty = 31
+	}
+
+	for y := 0; y <= lasty; y++ {
+		for x := 0; x <= lastx; x++ {
 			var stamp *Stamp
 
 			// We should do better
 			switch whatis(maze, x, y) {
 			case MAZEOBJ_TILE_FLOOR:
-				adj := checkadj3(maze, x, y) + rand.Intn(4)
-				stamp = floorGetStamp(maze.floorpattern, adj, maze.floorcolor)
+				// adj := checkadj3(maze, x, y) + rand.Intn(4)
+				// stamp = floorGetStamp(maze.floorpattern, adj, maze.floorcolor)
 			case MAZEOBJ_WALL_REGULAR:
 				adj := checkadj8(maze, x, y)
 				stamp = wallGetStamp(maze.wallpattern, adj, maze.wallcolor)
@@ -162,12 +191,13 @@ func genpfimage() {
 				stamp = itemGetStamp("hdoor")
 			case MAZEOBJ_DOOR_VERT:
 				stamp = itemGetStamp("vdoor")
-			case MAZEOBJ_HIDDENPOT:
+			case MAZEOBJ_PLAYERSTART:
 				stamp = itemGetStamp("plus")
 			case MAZEOBJ_EXIT:
 				stamp = itemGetStamp("exit")
 			case MAZEOBJ_EXITTO6:
 				stamp = itemGetStamp("exit6")
+
 			case MAZEOBJ_MONST_GHOST:
 				stamp = itemGetStamp("ghost")
 			case MAZEOBJ_MONST_GRUNT:
@@ -188,6 +218,7 @@ func genpfimage() {
 				stamp = itemGetStamp("supersorc")
 			case MAZEOBJ_MONST_IT:
 				stamp = itemGetStamp("it")
+
 			case MAZEOBJ_GEN_GHOST1:
 				stamp = itemGetStamp("ghostgen1")
 			case MAZEOBJ_GEN_GHOST2:
@@ -242,6 +273,8 @@ func genpfimage() {
 				stamp = itemGetStamp("potion")
 			case MAZEOBJ_POT_INVULN:
 				stamp = itemGetStamp("ipotion")
+			default:
+				// fmt.Printf("WARNING: Unhandled obj id 0x%02x\n", whatis(maze, x, y))
 			}
 
 			if stamp != nil {
@@ -250,6 +283,23 @@ func genpfimage() {
 		}
 	}
 
+	if maze.flags4&LFLAG4_WRAP_H > 0 {
+		l := itemGetStamp("arrowleft")
+		r := itemGetStamp("arrowright")
+		for i := 2; i <= 32; i++ {
+			writestamptoimage(img, l, 0, i*16)
+			writestamptoimage(img, r, 32*16+16, i*16)
+		}
+	}
+
+	if maze.flags4&LFLAG4_WRAP_V > 0 {
+		u := itemGetStamp("arrowup")
+		d := itemGetStamp("arrowdown")
+		for i := 1; i < 32; i++ {
+			writestamptoimage(img, u, i*16+16, 0)
+			writestamptoimage(img, d, i*16+16, 32*16+16)
+		}
+	}
 	savetopng(opts.Output, img)
 }
 
@@ -260,26 +310,6 @@ func genpfimage() {
 // vertical wall += 16
 
 func whatis(maze *Maze, x int, y int) int {
-	if (maze.flags4 & LFLAG4_WRAP_H) != 0 {
-		if x < 0 {
-			x = 32 + x
-		} else {
-			x = x % 32
-		}
-	}
-
-	if (maze.flags4 & LFLAG4_WRAP_V) != 0 {
-		if x < 0 {
-			x = 32 + x
-		} else {
-			y = y % 32
-		}
-	}
-
-	if x < 0 || y < 0 || x >= 32 || y >= 32 {
-		return 0
-	}
-
 	return maze.data[xy{x, y}]
 }
 
@@ -341,24 +371,3 @@ func checkadj8(maze *Maze, x int, y int) int {
 
 	return adj
 }
-
-// img := genimage(tile, opts.DimX, opts.DimY)
-// f, _ := os.OpenFile(opts.Output, os.O_WRONLY|os.O_CREATE, 0600)
-// defer f.Close()
-// // gif.Encode(f, img, &gif.Options{NumColors: 16})
-// png.Encode(f, img)
-
-// func genimage(tilenum int, xtiles int, ytiles int) *image.NRGBA {
-//     img := blankimage(8*xtiles, 8*ytiles)
-
-//     tc := 0
-//     for y := 0; y < ytiles; y++ {
-//         for x := 0; x < xtiles; x++ {
-//             tile := getparsedtile(tilenum + tc)
-//             writetiletoimage(tile, img, x*8, y*8)
-//             tc++
-//         }
-//     }
-
-//     return img
-// }
