@@ -238,6 +238,11 @@ func genpfimage(maze *Maze) {
 				stamp = itemGetStamp("potion")
 			case MAZEOBJ_POT_INVULN:
 				stamp = itemGetStamp("ipotion")
+
+			case MAZEOBJ_FORCEFIELDHUB:
+				stamp = itemGetStamp("ff")
+			case MAZEOBJ_TRANSPORTER:
+				stamp = itemGetStamp("tport")
 			default:
 				// fmt.Printf("WARNING: Unhandled obj id 0x%02x\n", whatis(maze, x, y))
 			}

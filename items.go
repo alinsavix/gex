@@ -216,8 +216,8 @@ var itemStamps = map[string]Stamp{
 	"tport": Stamp{
 		width:   2,
 		numbers: tilerange(0x49e, 4),
-		ptype:   "base",
-		pnum:    2,
+		ptype:   "teleff",
+		pnum:    0,
 		trans0:  true,
 	},
 
@@ -226,8 +226,8 @@ var itemStamps = map[string]Stamp{
 	"ff": Stamp{
 		width:   2,
 		numbers: tilerange(0x4a2, 4),
-		ptype:   "base",
-		pnum:    2,
+		ptype:   "teleff",
+		pnum:    0,
 		trans0:  true,
 	},
 

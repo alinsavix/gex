@@ -2,6 +2,27 @@ package main
 
 import "image/color"
 
+var teleFfPalettes = [][]color.Color{
+	{
+		IRGB{0x0000},
+		IRGB{0x0000},
+		IRGB{0x4FEC},
+		IRGB{0x5F00},
+		IRGB{0x8F00},
+		IRGB{0xCF20},
+		IRGB{0xFF20},
+		IRGB{0xEFFF},
+		IRGB{0x8F00},
+		IRGB{0xCF21},
+		IRGB{0xFF76},
+		IRGB{0xFF98},
+		IRGB{0xFFDD},
+		IRGB{0xFFFF},
+		IRGB{0x0000},
+		IRGB{0x0000},
+	},
+}
+
 var floorPalettes = [][]color.Color{
 	{
 		IRGB{0x0}, // palette 0
@@ -1069,6 +1090,7 @@ var elfPalettes = [][]color.Color{
 }
 
 var gauntletPalettes = map[string][][]color.Color{
+	"teleff":   teleFfPalettes,
 	"floor":    floorPalettes,
 	"wall":     wallPalettes,
 	"base":     basePalettes,
