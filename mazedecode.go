@@ -40,6 +40,7 @@ type MazeData map[xy]int
 
 type Maze struct {
 	data         MazeData
+	encodedbytes int
 	secret       int
 	flags        int
 	wallpattern  int
@@ -121,7 +122,7 @@ func mazeDecompress(compressed []int) *Maze {
 	//  var m [32][32]int
 	var maze = &Maze{}
 	maze.data = make(map[xy]int)
-
+	maze.encodedbytes = len(compressed)
 	maze.secret = compressed[0] & 0x1f
 
 	// This inability to transparently go back and forth between types is
