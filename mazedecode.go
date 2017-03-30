@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/binary"
 	"fmt"
 	"math/rand"
 )
@@ -40,10 +41,7 @@ type MazeData map[xy]int
 type Maze struct {
 	data         MazeData
 	secret       int
-	flags1       int
-	flags2       int
-	flags3       int
-	flags4       int
+	flags        int
 	wallpattern  int
 	wallcolor    int
 	floorpattern int
@@ -126,10 +124,14 @@ func mazeDecompress(compressed []int) *Maze {
 
 	maze.secret = compressed[0] & 0x1f
 
-	maze.flags1 = compressed[1]
-	maze.flags2 = compressed[2]
-	maze.flags3 = compressed[3]
-	maze.flags4 = compressed[4]
+	// This inability to transparently go back and forth between types is
+	// obnoxious.
+	flagbytes := make([]byte, 4)
+	flagbytes[0] = byte(compressed[1])
+	flagbytes[1] = byte(compressed[2])
+	flagbytes[2] = byte(compressed[3])
+	flagbytes[3] = byte(compressed[4])
+	maze.flags = int(binary.BigEndian.Uint32(flagbytes))
 
 	maze.wallpattern = compressed[5] & 0x0f
 	maze.floorpattern = (compressed[5] & 0xf0) >> 4

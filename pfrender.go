@@ -87,13 +87,13 @@ var maze12 = []int{
 // top walls, so that the maze will be enclosed.
 func copyedges(maze *Maze) {
 	for i := 0; i <= 32; i++ {
-		if (maze.flags4 & LFLAG4_WRAP_H) == 0 {
+		if (maze.flags & LFLAG4_WRAP_H) == 0 {
 			maze.data[xy{32, i}] = maze.data[xy{0, i}]
 		}
 	}
 
 	for i := 0; i <= 32; i++ {
-		if (maze.flags4 & LFLAG4_WRAP_V) == 0 {
+		if (maze.flags & LFLAG4_WRAP_V) == 0 {
 			maze.data[xy{i, 32}] = maze.data[xy{i, 0}]
 		}
 	}
@@ -115,12 +115,12 @@ func genpfimage(maze *Maze) {
 	}
 
 	lastx := 32
-	if maze.flags4&LFLAG4_WRAP_H > 0 {
+	if maze.flags&LFLAG4_WRAP_H > 0 {
 		lastx = 31
 	}
 
 	lasty := 32
-	if maze.flags4&LFLAG4_WRAP_V > 0 {
+	if maze.flags&LFLAG4_WRAP_V > 0 {
 		lasty = 31
 	}
 
@@ -248,7 +248,7 @@ func genpfimage(maze *Maze) {
 		}
 	}
 
-	if maze.flags4&LFLAG4_WRAP_H > 0 {
+	if maze.flags&LFLAG4_WRAP_H > 0 {
 		l := itemGetStamp("arrowleft")
 		r := itemGetStamp("arrowright")
 		for i := 2; i <= 32; i++ {
@@ -257,7 +257,7 @@ func genpfimage(maze *Maze) {
 		}
 	}
 
-	if maze.flags4&LFLAG4_WRAP_V > 0 {
+	if maze.flags&LFLAG4_WRAP_V > 0 {
 		u := itemGetStamp("arrowup")
 		d := itemGetStamp("arrowdown")
 		for i := 1; i < 32; i++ {
