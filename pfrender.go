@@ -133,10 +133,11 @@ func genpfimage(maze *Maze) {
 			case MAZEOBJ_TILE_FLOOR:
 			// adj := checkadj3(maze, x, y) + rand.Intn(4)
 			// stamp = floorGetStamp(maze.floorpattern, adj, maze.floorcolor)
+			case MAZEOBJ_WALL_DESTRUCTABLE:
+				adj := checkadj8(maze, x, y)
+				stamp = wallGetStamp(5, adj, maze.wallcolor)
 			case MAZEOBJ_WALL_SECRET:
 				fallthrough
-			case MAZEOBJ_WALL_DESTRUCTABLE:
-				fallthrough // FIXME: Should have diff tile
 			case MAZEOBJ_WALL_TRAPCYC1:
 				fallthrough
 			case MAZEOBJ_WALL_TRAPCYC2:
