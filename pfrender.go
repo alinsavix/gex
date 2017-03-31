@@ -131,8 +131,18 @@ func genpfimage(maze *Maze) {
 			// We should do better
 			switch whatis(maze, x, y) {
 			case MAZEOBJ_TILE_FLOOR:
-				// adj := checkadj3(maze, x, y) + rand.Intn(4)
-				// stamp = floorGetStamp(maze.floorpattern, adj, maze.floorcolor)
+			// adj := checkadj3(maze, x, y) + rand.Intn(4)
+			// stamp = floorGetStamp(maze.floorpattern, adj, maze.floorcolor)
+			case MAZEOBJ_WALL_SECRET:
+				fallthrough
+			case MAZEOBJ_WALL_DESTRUCTABLE:
+				fallthrough // FIXME: Should have diff tile
+			case MAZEOBJ_WALL_TRAPCYC1:
+				fallthrough
+			case MAZEOBJ_WALL_TRAPCYC2:
+				fallthrough
+			case MAZEOBJ_WALL_TRAPCYC3:
+				fallthrough
 			case MAZEOBJ_WALL_REGULAR:
 				adj := checkadj8(maze, x, y)
 				stamp = wallGetStamp(maze.wallpattern, adj, maze.wallcolor)
@@ -286,15 +296,15 @@ func whatis(maze *Maze, x int, y int) int {
 func checkadj3(maze *Maze, x int, y int) int {
 	adj := 0
 
-	if whatis(maze, x-1, y) == MAZEOBJ_WALL_REGULAR {
+	if iswall(whatis(maze, x-1, y)) {
 		adj += 4
 	}
 
-	if whatis(maze, x, y+1) == MAZEOBJ_WALL_REGULAR {
+	if iswall(whatis(maze, x, y+1)) {
 		adj += 16
 	}
 
-	if whatis(maze, x-1, y+1) == MAZEOBJ_WALL_REGULAR {
+	if iswall(whatis(maze, x-1, y+1)) {
 		adj += 8
 	}
 
@@ -314,28 +324,28 @@ func checkadj3(maze *Maze, x int, y int) int {
 func checkadj8(maze *Maze, x int, y int) int {
 	adj := 0
 
-	if whatis(maze, x-1, y-1) == MAZEOBJ_WALL_REGULAR {
+	if iswall(whatis(maze, x-1, y-1)) {
 		adj += 0x01
 	}
-	if whatis(maze, x, y-1) == MAZEOBJ_WALL_REGULAR {
+	if iswall(whatis(maze, x, y-1)) {
 		adj += 0x02
 	}
-	if whatis(maze, x+1, y-1) == MAZEOBJ_WALL_REGULAR {
+	if iswall(whatis(maze, x+1, y-1)) {
 		adj += 0x04
 	}
-	if whatis(maze, x-1, y) == MAZEOBJ_WALL_REGULAR {
+	if iswall(whatis(maze, x-1, y)) {
 		adj += 0x08
 	}
-	if whatis(maze, x+1, y) == MAZEOBJ_WALL_REGULAR {
+	if iswall(whatis(maze, x+1, y)) {
 		adj += 0x010
 	}
-	if whatis(maze, x-1, y+1) == MAZEOBJ_WALL_REGULAR {
+	if iswall(whatis(maze, x-1, y+1)) {
 		adj += 0x20
 	}
-	if whatis(maze, x, y+1) == MAZEOBJ_WALL_REGULAR {
+	if iswall(whatis(maze, x, y+1)) {
 		adj += 0x40
 	}
-	if whatis(maze, x+1, y+1) == MAZEOBJ_WALL_REGULAR {
+	if iswall(whatis(maze, x+1, y+1)) {
 		adj += 0x80
 	}
 
