@@ -99,6 +99,8 @@ func copyedges(maze *Maze) {
 	}
 }
 
+var foods = []string{"ifood1", "ifood2", "ifood3"}
+
 func genpfimage(maze *Maze) {
 	// 8 pixels * 2 tiles * 32 stamps, plus extra space on edges
 	img := blankimage(8*2*32+32, 8*2*32+32)
@@ -106,6 +108,7 @@ func genpfimage(maze *Maze) {
 	// mazes will always be the same size, so just use constants
 	// maze := mazeDecompress(mazedata)
 	copyedges(maze)
+	paletteMakeSpecial(maze.floorpattern, maze.floorcolor)
 
 	for y := 0; y < 32; y++ {
 		for x := 0; x < 32; x++ {
@@ -133,6 +136,20 @@ func genpfimage(maze *Maze) {
 			case MAZEOBJ_TILE_FLOOR:
 			// adj := checkadj3(maze, x, y) + rand.Intn(4)
 			// stamp = floorGetStamp(maze.floorpattern, adj, maze.floorcolor)
+			case MAZEOBJ_TILE_STUN:
+				adj := checkadj3(maze, x, y) + rand.Intn(4)
+				stamp = floorGetStamp(maze.floorpattern, adj, maze.floorcolor)
+				stamp.ptype = "stun" // use trap palette (FIXME: consider moving)
+				stamp.pnum = 0
+			case MAZEOBJ_TILE_TRAP1:
+				fallthrough
+			case MAZEOBJ_TILE_TRAP2:
+				fallthrough
+			case MAZEOBJ_TILE_TRAP3:
+				adj := checkadj3(maze, x, y) + rand.Intn(4)
+				stamp = floorGetStamp(maze.floorpattern, adj, maze.floorcolor)
+				stamp.ptype = "trap" // use trap palette (FIXME: consider moving)
+				stamp.pnum = 0
 			case MAZEOBJ_WALL_DESTRUCTABLE:
 				adj := checkadj8(maze, x, y)
 				stamp = wallGetStamp(5, adj, maze.wallcolor)
@@ -242,9 +259,9 @@ func genpfimage(maze *Maze) {
 			case MAZEOBJ_TREASURE_BAG:
 				stamp = itemGetStamp("goldbag")
 			case MAZEOBJ_FOOD_DESTRUCTABLE:
-				stamp = itemGetStamp("mfood")
+				stamp = itemGetStamp("food")
 			case MAZEOBJ_FOOD_INVULN:
-				stamp = itemGetStamp("ifood1")
+				stamp = itemGetStamp(foods[rand.Intn(3)])
 			case MAZEOBJ_POT_DESTRUCTABLE:
 				stamp = itemGetStamp("potion")
 			case MAZEOBJ_POT_INVULN:

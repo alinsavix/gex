@@ -1089,6 +1089,56 @@ var elfPalettes = [][]color.Color{
 	},
 }
 
+var trapPalette = [][]color.Color{
+	{
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+	},
+}
+
+var stunPalette = [][]color.Color{
+	{
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+	},
+}
+
+var sColors1 = []int{
+	10, 10, 10, 10, 10, 1, 9, 9, 9,
+}
+
+var sColors2 = []int{
+	12, 12, 12, 12, 12, 2, 11, 1, 2,
+}
+
 var gauntletPalettes = map[string][][]color.Color{
 	"teleff":   teleFfPalettes,
 	"floor":    floorPalettes,
@@ -1098,4 +1148,20 @@ var gauntletPalettes = map[string][][]color.Color{
 	"valkyrie": valkyriePalettes,
 	"wizard":   wizardPalettes,
 	"elf":      elfPalettes,
+	"trap":     trapPalette,
+	"stun":     stunPalette,
+}
+
+func paletteMakeSpecial(pattern int, color int) {
+	for i := 0; i < 16; i++ {
+		trapPalette[0][i] = floorPalettes[color][i]
+	}
+	trapPalette[0][sColors1[pattern]] = IRGB{0xa0aa}
+	trapPalette[0][sColors2[pattern]] = IRGB{0xa0aa}
+
+	for i := 0; i < 16; i++ {
+		stunPalette[0][i] = floorPalettes[color][i]
+	}
+	stunPalette[0][sColors1[pattern]] = IRGB{0xaaa0}
+	stunPalette[0][sColors2[pattern]] = IRGB{0xaaa0}
 }

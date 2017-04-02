@@ -38,6 +38,13 @@ var itemStamps = map[string]Stamp{
 		trans0:  true,
 	},
 
+	"food": Stamp{
+		width:   3,
+		numbers: tilerange(0x963, 9),
+		ptype:   "base",
+		pnum:    1,
+		trans0:  true,
+	},
 	"ifood1": Stamp{
 		width:   3,
 		numbers: tilerange(0x96c, 9),
