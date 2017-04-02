@@ -287,7 +287,7 @@ var itemStamps = map[string]Stamp{
 	"plus": Stamp{
 		width:   2,
 		numbers: tilerange(0xbfc, 4),
-		ptype:   "floor",
+		ptype:   "base",
 		pnum:    1,
 		trans0:  true,
 	},
