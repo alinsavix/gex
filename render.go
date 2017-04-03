@@ -189,7 +189,6 @@ func writestamptoimage(img *image.NRGBA, stamp *Stamp, xloc int, yloc int) {
 				stamp.trans0, xloc+(x*8), yloc+(y*8))
 		}
 	}
-
 }
 
 func savetopng(fn string, img *image.NRGBA) {
