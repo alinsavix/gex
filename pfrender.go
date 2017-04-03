@@ -1,6 +1,7 @@
 package main
 
 import (
+	"image"
 	"math/rand"
 )
 
@@ -130,6 +131,7 @@ func genpfimage(maze *Maze) {
 	for y := 0; y <= lasty; y++ {
 		for x := 0; x <= lastx; x++ {
 			var stamp *Stamp
+			var dots int // dot count
 
 			// We should do better
 			switch whatis(maze, x, y) {
@@ -141,11 +143,21 @@ func genpfimage(maze *Maze) {
 				stamp = floorGetStamp(maze.floorpattern, adj, maze.floorcolor)
 				stamp.ptype = "stun" // use trap palette (FIXME: consider moving)
 				stamp.pnum = 0
+
+				// Tried to simplify these a bit with a goto, but golang didn't
+				// like it ('jump into block'). I should figure out why.
 			case MAZEOBJ_TILE_TRAP1:
+				dots = 1
 				fallthrough
 			case MAZEOBJ_TILE_TRAP2:
+				if dots == 0 {
+					dots = 2
+				}
 				fallthrough
 			case MAZEOBJ_TILE_TRAP3:
+				if dots == 0 {
+					dots = 3
+				}
 				adj := checkadj3(maze, x, y) + rand.Intn(4)
 				stamp = floorGetStamp(maze.floorpattern, adj, maze.floorcolor)
 				stamp.ptype = "trap" // use trap palette (FIXME: consider moving)
@@ -156,10 +168,17 @@ func genpfimage(maze *Maze) {
 			case MAZEOBJ_WALL_SECRET:
 				fallthrough
 			case MAZEOBJ_WALL_TRAPCYC1:
+				dots = 1
 				fallthrough
 			case MAZEOBJ_WALL_TRAPCYC2:
+				if dots == 0 {
+					dots = 2
+				}
 				fallthrough
 			case MAZEOBJ_WALL_TRAPCYC3:
+				if dots == 0 {
+					dots = 3
+				}
 				fallthrough
 			case MAZEOBJ_WALL_REGULAR:
 				adj := checkadj8(maze, x, y)
@@ -278,6 +297,10 @@ func genpfimage(maze *Maze) {
 			if stamp != nil {
 				writestamptoimage(img, stamp, x*16+16, y*16+16)
 			}
+
+			if dots != 0 {
+				renderdots(img, x*16+16, y*16+16, dots)
+			}
 		}
 	}
 
@@ -368,4 +391,29 @@ func checkadj8(maze *Maze, x int, y int) int {
 	}
 
 	return adj
+}
+
+func dotat(img *image.NRGBA, xloc int, yloc int) {
+	c := IRGB{0xffff}
+
+	for y := 0; y < 2; y++ {
+		for x := 0; x < 2; x++ {
+			img.Set(xloc+x, yloc+y, c)
+
+		}
+	}
+}
+
+func renderdots(img *image.NRGBA, xloc int, yloc int, count int) {
+	switch count {
+	case 1:
+		dotat(img, xloc+7, yloc+7)
+	case 2:
+		dotat(img, xloc+9, yloc+5)
+		dotat(img, xloc+5, yloc+9)
+	case 3:
+		dotat(img, xloc+7, yloc+7)
+		dotat(img, xloc+9, yloc+5)
+		dotat(img, xloc+5, yloc+9)
+	}
 }
