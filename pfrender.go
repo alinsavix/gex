@@ -109,7 +109,7 @@ func genpfimage(maze *Maze) {
 	// mazes will always be the same size, so just use constants
 	// maze := mazeDecompress(mazedata)
 	copyedges(maze)
-	paletteMakeSpecial(maze.floorpattern, maze.floorcolor)
+	paletteMakeSpecial(maze.floorpattern, maze.floorcolor, maze.wallcolor)
 
 	for y := 0; y < 32; y++ {
 		for x := 0; x < 32; x++ {
@@ -166,7 +166,10 @@ func genpfimage(maze *Maze) {
 				adj := checkadj8(maze, x, y)
 				stamp = wallGetStamp(5, adj, maze.wallcolor)
 			case MAZEOBJ_WALL_SECRET:
-				fallthrough
+				adj := checkadj8(maze, x, y)
+				stamp = wallGetStamp(maze.wallpattern, adj, maze.wallcolor)
+				stamp.ptype = "secret"
+				stamp.pnum = 0
 			case MAZEOBJ_WALL_TRAPCYC1:
 				dots = 1
 				fallthrough
@@ -180,11 +183,17 @@ func genpfimage(maze *Maze) {
 					dots = 3
 				}
 				fallthrough
+			case MAZEOBJ_WALL_RANDOM:
+				if dots == 0 {
+					dots = 4
+				}
+				fallthrough
 			case MAZEOBJ_WALL_REGULAR:
 				adj := checkadj8(maze, x, y)
 				stamp = wallGetStamp(maze.wallpattern, adj, maze.wallcolor)
 			case MAZEOBJ_KEY:
 				stamp = itemGetStamp("key")
+
 			case MAZEOBJ_POWER_INVIS:
 				stamp = itemGetStamp("invis")
 			case MAZEOBJ_POWER_REPULSE:
@@ -197,8 +206,6 @@ func genpfimage(maze *Maze) {
 				stamp = itemGetStamp("supershot")
 			case MAZEOBJ_POWER_INVULN:
 				stamp = itemGetStamp("invuln")
-			case MAZEOBJ_MONST_DRAGON:
-				stamp = itemGetStamp("dragon")
 			case MAZEOBJ_DOOR_HORIZ:
 				stamp = itemGetStamp("hdoor")
 			case MAZEOBJ_DOOR_VERT:
@@ -230,6 +237,8 @@ func genpfimage(maze *Maze) {
 				stamp = itemGetStamp("supersorc")
 			case MAZEOBJ_MONST_IT:
 				stamp = itemGetStamp("it")
+			case MAZEOBJ_MONST_DRAGON:
+				stamp = itemGetStamp("dragon")
 
 			case MAZEOBJ_GEN_GHOST1:
 				stamp = itemGetStamp("ghostgen1")
@@ -415,5 +424,10 @@ func renderdots(img *image.NRGBA, xloc int, yloc int, count int) {
 		dotat(img, xloc+7, yloc+7)
 		dotat(img, xloc+9, yloc+5)
 		dotat(img, xloc+5, yloc+9)
+	case 4:
+		dotat(img, xloc+9, yloc+5)
+		dotat(img, xloc+5, yloc+9)
+		dotat(img, xloc+5, yloc+5)
+		dotat(img, xloc+9, yloc+9)
 	}
 }

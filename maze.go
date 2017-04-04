@@ -35,11 +35,10 @@ func domaze(arg string) {
 
 	fmt.Printf("Maze number: %d\n", mazenum)
 	maze := mazeDecompress(slapsticReadMaze(mazenum))
-	genpfimage(maze)
 
 	if opts.Verbose {
 		mazeMetaDecode(maze)
-		//		fmt.Printf("flags1: %08b       flags2: %08b\n", maze.flags1, maze.flags2)
-		//		fmt.Printf("flags3: %08b       flags4: %08b\n", maze.flags3, maze.flags4)
 	}
+
+	genpfimage(maze)
 }

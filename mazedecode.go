@@ -88,6 +88,10 @@ func expand(maze *Maze, location int, t int, count int) int {
 
 			x, y := index2xy(location + i)
 			maze.data[xy{x, y}] = getbytefortype(t)
+
+			if t == MAZEOBJ_MONST_DRAGON {
+				i++
+			}
 		}
 	}
 	return location + count
