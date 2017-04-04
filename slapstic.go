@@ -44,7 +44,7 @@ func slapsticMazeGetRealAddr(mazenum int) int {
 	bank := slapsticMazeGetBank(mazenum)
 	addr := slapsticReadMazeOffset(mazenum) + (0x2000 * bank)
 
-	// fmt.Printf("Real addr: 0x%06x\n", addr)
+	// fmt.Printf("Maze real addr: 0x%06x\n", addr)
 	return addr
 }
 
@@ -87,6 +87,8 @@ func slapsticReadBytes(offset int, count int) []byte {
 		offset -= SLAPSTIC_START
 	}
 
+	// fmt.Printf("offset to load is: %06x\n", offset)
+
 	sf[0].Seek(int64(offset/2), 0)
 	sf[1].Seek(int64(offset/2), 0)
 
@@ -94,6 +96,13 @@ func slapsticReadBytes(offset int, count int) []byte {
 	var b = make([]byte, 1)
 
 	for i := 0; i < count; i++ {
+		// If we're starting on an odd byte, make it look like we've
+		// already read an even one.
+		if (i == 0) && (offset%2 > 0) {
+			sf[0].Read(b)
+			i++
+			count++
+		}
 		_, err := sf[i%2].Read(b)
 		check(err)
 		buf = append(buf, b[0])
