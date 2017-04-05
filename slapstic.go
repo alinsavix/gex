@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/binary"
+	"io"
 	"os"
 )
 
@@ -103,7 +104,10 @@ func slapsticReadBytes(offset int, count int) []byte {
 			i++
 			count++
 		}
-		_, err := sf[i%2].Read(b)
+		s, err := sf[i%2].Read(b)
+		if s == 0 && err == io.EOF {
+			break
+		}
 		check(err)
 		buf = append(buf, b[0])
 	}

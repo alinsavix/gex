@@ -150,6 +150,8 @@ func mazeDecompress(compressed []int) *Maze {
 
 	prev := htype2 // previous value, for 'repeat previous' types
 
+	// fmt.Printf("Encoded size: %d\n", maze.encodedbytes)
+
 	// Fill in first row with walls, always
 	for i := 0; i < 32; i++ {
 		maze.data[xy{i, 0}] = MAZEOBJ_WALL_REGULAR
@@ -160,6 +162,11 @@ func mazeDecompress(compressed []int) *Maze {
 	compressed = compressed[11:] // pointer to where we are in the input stream
 
 	for location < 1024 {
+		// fmt.Printf("input remaining: %d, next byte 0x%02x, output remaining: %d\n", len(compressed), compressed[0], 1024-location)
+		if compressed[0] == 0 {
+			fmt.Printf("WARNING: Read end of maze datastream before maze full.\n")
+			break
+		}
 		var token int
 		//      fmt.Printf("Remaining input length: %d, output remaining: %d\n", len(level), 1024-p)
 		token, compressed = compressed[0], compressed[1:]
