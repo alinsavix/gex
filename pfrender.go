@@ -113,7 +113,7 @@ func genpfimage(maze *Maze) {
 
 	for y := 0; y < 32; y++ {
 		for x := 0; x < 32; x++ {
-			stamp := floorGetStamp(maze.floorpattern, checkadj3(maze, x, y)+rand.Intn(4), maze.floorcolor)
+			stamp := floorGetStamp(maze.floorpattern, checkwalladj3(maze, x, y)+rand.Intn(4), maze.floorcolor)
 			writestamptoimage(img, stamp, x*16+16, y*16+16)
 		}
 	}
@@ -136,10 +136,10 @@ func genpfimage(maze *Maze) {
 			// We should do better
 			switch whatis(maze, x, y) {
 			case MAZEOBJ_TILE_FLOOR:
-			// adj := checkadj3(maze, x, y) + rand.Intn(4)
+			// adj := checkwalladj3(maze, x, y) + rand.Intn(4)
 			// stamp = floorGetStamp(maze.floorpattern, adj, maze.floorcolor)
 			case MAZEOBJ_TILE_STUN:
-				adj := checkadj3(maze, x, y) + rand.Intn(4)
+				adj := checkwalladj3(maze, x, y) + rand.Intn(4)
 				stamp = floorGetStamp(maze.floorpattern, adj, maze.floorcolor)
 				stamp.ptype = "stun" // use trap palette (FIXME: consider moving)
 				stamp.pnum = 0
@@ -158,15 +158,15 @@ func genpfimage(maze *Maze) {
 				if dots == 0 {
 					dots = 3
 				}
-				adj := checkadj3(maze, x, y) + rand.Intn(4)
+				adj := checkwalladj3(maze, x, y) + rand.Intn(4)
 				stamp = floorGetStamp(maze.floorpattern, adj, maze.floorcolor)
 				stamp.ptype = "trap" // use trap palette (FIXME: consider moving)
 				stamp.pnum = 0
 			case MAZEOBJ_WALL_DESTRUCTABLE:
-				adj := checkadj8(maze, x, y)
+				adj := checkwalladj8(maze, x, y)
 				stamp = wallGetStamp(5, adj, maze.wallcolor)
 			case MAZEOBJ_WALL_SECRET:
-				adj := checkadj8(maze, x, y)
+				adj := checkwalladj8(maze, x, y)
 				stamp = wallGetStamp(maze.wallpattern, adj, maze.wallcolor)
 				stamp.ptype = "secret"
 				stamp.pnum = 0
@@ -189,7 +189,7 @@ func genpfimage(maze *Maze) {
 				}
 				fallthrough
 			case MAZEOBJ_WALL_REGULAR:
-				adj := checkadj8(maze, x, y)
+				adj := checkwalladj8(maze, x, y)
 				stamp = wallGetStamp(maze.wallpattern, adj, maze.wallcolor)
 			case MAZEOBJ_KEY:
 				stamp = itemGetStamp("key")
@@ -206,10 +206,14 @@ func genpfimage(maze *Maze) {
 				stamp = itemGetStamp("supershot")
 			case MAZEOBJ_POWER_INVULN:
 				stamp = itemGetStamp("invuln")
+
 			case MAZEOBJ_DOOR_HORIZ:
-				stamp = itemGetStamp("hdoor")
+				adj := checkdooradj4(maze, x, y)
+				stamp = doorGetStamp(DOOR_HORIZ, adj)
 			case MAZEOBJ_DOOR_VERT:
-				stamp = itemGetStamp("vdoor")
+				adj := checkdooradj4(maze, x, y)
+				stamp = doorGetStamp(DOOR_VERT, adj)
+
 			case MAZEOBJ_PLAYERSTART:
 				stamp = itemGetStamp("plus")
 			case MAZEOBJ_EXIT:
@@ -343,7 +347,15 @@ func whatis(maze *Maze, x int, y int) int {
 	return maze.data[xy{x, y}]
 }
 
-func checkadj3(maze *Maze, x int, y int) int {
+func isdoor(t int) bool {
+	if t == MAZEOBJ_DOOR_HORIZ || t == MAZEOBJ_DOOR_VERT {
+		return true
+	} else {
+		return false
+	}
+}
+
+func checkwalladj3(maze *Maze, x int, y int) int {
 	adj := 0
 
 	if iswall(whatis(maze, x-1, y)) {
@@ -371,7 +383,7 @@ func checkadj3(maze *Maze, x int, y int) int {
 //
 // FIXME: Our sense of up/down here is probably confused
 
-func checkadj8(maze *Maze, x int, y int) int {
+func checkwalladj8(maze *Maze, x int, y int) int {
 	adj := 0
 
 	if iswall(whatis(maze, x-1, y-1)) {
@@ -402,13 +414,36 @@ func checkadj8(maze *Maze, x int, y int) int {
 	return adj
 }
 
+// Look and see what doors are adjacent to this door
+//
+// Values to use:
+//    up:  0x01    right:  0x02    down:  0x04    left:  0x08
+
+func checkdooradj4(maze *Maze, x int, y int) int {
+	adj := 0
+
+	if isdoor(whatis(maze, x, y-1)) {
+		adj += 0x01
+	}
+	if isdoor(whatis(maze, x+1, y)) {
+		adj += 0x02
+	}
+	if isdoor(whatis(maze, x, y+1)) {
+		adj += 0x04
+	}
+	if isdoor(whatis(maze, x-1, y)) {
+		adj += 0x08
+	}
+
+	return adj
+}
+
 func dotat(img *image.NRGBA, xloc int, yloc int) {
 	c := IRGB{0xffff}
 
 	for y := 0; y < 2; y++ {
 		for x := 0; x < 2; x++ {
 			img.Set(xloc+x, yloc+y, c)
-
 		}
 	}
 }
