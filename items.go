@@ -267,7 +267,6 @@ var itemStamps = map[string]Stamp{
 		trans0:  false,
 	},
 
-	// FIXME: Incorrect tiles, but works for now?
 	"vdoor": Stamp{
 		width:   2,
 		numbers: tilerange(0x1d80, 4),
@@ -275,10 +274,9 @@ var itemStamps = map[string]Stamp{
 		pnum:    0,
 		trans0:  true,
 	},
-	// FIXME: Also wrong tiles
 	"hdoor": Stamp{
-		width:   3,
-		numbers: tilerange(0x1d52, 3),
+		width:   2,
+		numbers: tilerange(0x1d48, 4),
 		ptype:   "base",
 		pnum:    0,
 		trans0:  true,
