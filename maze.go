@@ -4,11 +4,10 @@ import (
 	"fmt"
 	"regexp"
 	"strconv"
+	"strings"
 )
 
-var reMazeNum = regexp.MustCompile(`^maze(\d+)`)
-
-func mazeMetaDecode(maze *Maze) {
+func mazeMetaPrint(maze *Maze) {
 	fmt.Printf("  Encoded length: %3d bytes\n", maze.encodedbytes)
 	fmt.Printf("  Wall pattern: %02d, Wall color: %02d     Floor pattern: %02d, Floor color: %02d\n",
 		maze.wallpattern, maze.wallcolor, maze.floorpattern, maze.floorcolor)
@@ -22,23 +21,37 @@ func mazeMetaDecode(maze *Maze) {
 	fmt.Printf("  Secret trick: %2d - %s\n", maze.secret, mazeSecretStrings[maze.secret])
 }
 
+var reMazeNum = regexp.MustCompile(`^maze(\d+)`)
+var reMazeMeta = regexp.MustCompile(`^meta$`)
+
 func domaze(arg string) {
-	var mazenum int
+	split := strings.Split(arg, "-")
 
-	m := reMazeNum.FindStringSubmatch(arg)
-	if len(m[1]) <= 0 {
-		panic("Illegal maze number specified")
-	} else {
-		mn, _ := strconv.ParseInt(m[1], 10, 0)
-		mazenum = int(mn)
+	var mazeNum = -1
+	var mazeMeta = 0
+
+	for _, ss := range split {
+		switch {
+		case reMazeNum.MatchString(ss):
+			m, _ := strconv.ParseInt(reMazeNum.FindStringSubmatch(ss)[1], 10, 0)
+			mazeNum = int(m)
+			if mazeNum < 0 || mazeNum > 117 {
+				panic("Invalid maze number specified.")
+			}
+
+		case reMazeMeta.MatchString(ss):
+			mazeMeta = 1
+		}
 	}
 
-	fmt.Printf("Maze number: %d\n", mazenum)
-	maze := mazeDecompress(slapsticReadMaze(mazenum))
+	fmt.Printf("Maze number: %d\n", mazeNum)
+	maze := mazeDecompress(slapsticReadMaze(mazeNum), mazeMeta > 0)
 
-	if opts.Verbose {
-		mazeMetaDecode(maze)
+	if opts.Verbose || mazeMeta > 0 {
+		mazeMetaPrint(maze)
 	}
 
-	genpfimage(maze)
+	if mazeMeta == 0 {
+		genpfimage(maze)
+	}
 }

@@ -121,7 +121,7 @@ func vexpand(maze *Maze, location int, t int, count int) int {
 }
 
 // Outoput is maze[y][x]
-func mazeDecompress(compressed []int) *Maze {
+func mazeDecompress(compressed []int, metaonly bool) *Maze {
 	rand.Seed(5)
 	//  var m [32][32]int
 	var maze = &Maze{}
@@ -142,6 +142,10 @@ func mazeDecompress(compressed []int) *Maze {
 	maze.floorpattern = (compressed[5] & 0xf0) >> 4
 	maze.wallcolor = compressed[6] & 0x0f
 	maze.floorcolor = (compressed[6] & 0xf0) >> 4
+
+	if metaonly {
+		return maze
+	}
 
 	htype1 := compressed[7]  // horiz type 1
 	htype2 := compressed[8]  // horiz type 2
