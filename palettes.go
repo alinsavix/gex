@@ -1,6 +1,8 @@
 package main
 
-import "image/color"
+import (
+	"image/color"
+)
 
 var teleFfPalettes = [][]color.Color{
 	{
@@ -1152,12 +1154,25 @@ var secretPalette = [][]color.Color{
 	},
 }
 
-var sColors1 = []int{
-	10, 10, 10, 10, 10, 1, 9, 9, 9,
-}
-
-var sColors2 = []int{
-	12, 12, 12, 12, 12, 2, 11, 1, 2,
+var shrubPalette = [][]color.Color{
+	{
+		IRGB{0xf333}, // 0
+		IRGB{0xf333},
+		IRGB{0xf030},
+		IRGB{0xf040},
+		IRGB{0xf060}, // 4
+		IRGB{0xf180},
+		IRGB{0xf290},
+		IRGB{0xf730},
+		IRGB{0xfa60}, // 8
+		IRGB{0xf000},
+		IRGB{0xf000},
+		IRGB{0xf000},
+		IRGB{0xf000}, // 12
+		IRGB{0xf000},
+		IRGB{0xf555},
+		IRGB{0xf444},
+	},
 }
 
 var gauntletPalettes = map[string][][]color.Color{
@@ -1172,18 +1187,47 @@ var gauntletPalettes = map[string][][]color.Color{
 	"trap":     trapPalette,
 	"stun":     stunPalette,
 	"secret":   secretPalette,
+	"shrub":    shrubPalette,
 }
 
-func paletteMakeSpecial(floorpattern int, floorcolor int, wallcolor int) {
+var sColors1 = []int{
+	10, 10, 10, 10, 10, 1, 9, 9, 9,
+}
+
+var sColors2 = []int{
+	12, 12, 12, 12, 12, 2, 11, 1, 2,
+}
+
+var shrubFloorColorNums = [][]int{
+	{15, 10, 8, 15, 10, 13},
+	{15, 10, 8, 15, 10, 13},
+	{15, 10, 8, 15, 10, 13},
+	{15, 10, 8, 15, 10, 13},
+	{15, 10, 8, 15, 10, 13},
+	{5, 1, 0, 5, 1, 3},
+	{15, 10, 8, 15, 10, 13},
+	{4, 1, 0, 4, 1, 3},
+	{4, 1, 0, 4, 1, 3},
+}
+
+func paletteClone(dest []color.Color, src []color.Color) {
 	for i := 0; i < 16; i++ {
-		trapPalette[0][i] = floorPalettes[floorcolor][i]
+		dest[i] = src[i]
 	}
+}
+
+func paletteMakeSpecial(floorpattern int, floorcolor int, wallpattern, wallcolor int) {
+	// for i := 0; i < 16; i++ {
+	// 	trapPalette[0][i] = floorPalettes[floorcolor][i]
+	// }
+	paletteClone(trapPalette[0], floorPalettes[floorcolor])
 	trapPalette[0][sColors1[floorpattern]] = IRGB{0xa0aa}
 	trapPalette[0][sColors2[floorpattern]] = IRGB{0xa0aa}
 
-	for i := 0; i < 16; i++ {
-		stunPalette[0][i] = floorPalettes[floorcolor][i]
-	}
+	// for i := 0; i < 16; i++ {
+	// 	stunPalette[0][i] = floorPalettes[floorcolor][i]
+	// }
+	paletteClone(trapPalette[0], floorPalettes[floorcolor])
 	stunPalette[0][sColors1[floorpattern]] = IRGB{0xaaa0}
 	stunPalette[0][sColors2[floorpattern]] = IRGB{0xaaa0}
 
@@ -1196,5 +1240,22 @@ func paletteMakeSpecial(floorpattern int, floorcolor int, wallcolor int) {
 		}
 		c2 = (c.irgb & 0x0fff) + (c2 << 12)
 		secretPalette[0][i] = IRGB{c2}
+	}
+
+	// FIXME: The below won't behave if we call this multiple times for
+	// different mazes.
+	if wallpattern >= 6 {
+		if wallcolor > 0 {
+			paletteClone(shrubPalette[0], wallPalettes[wallcolor-1])
+		}
+
+		z := 0
+		if wallpattern >= 11 {
+			z = 3
+		}
+		cn := shrubFloorColorNums[floorpattern]
+		for i := 0; i < 3; i++ {
+			shrubPalette[0][13+i] = floorPalettes[floorcolor][cn[z+i]]
+		}
 	}
 }

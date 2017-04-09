@@ -109,11 +109,16 @@ func genpfimage(maze *Maze) {
 	// mazes will always be the same size, so just use constants
 	// maze := mazeDecompress(mazedata)
 	copyedges(maze)
-	paletteMakeSpecial(maze.floorpattern, maze.floorcolor, maze.wallcolor)
+	paletteMakeSpecial(maze.floorpattern, maze.floorcolor, maze.wallpattern, maze.wallcolor)
 
 	for y := 0; y < 32; y++ {
 		for x := 0; x < 32; x++ {
-			stamp := floorGetStamp(maze.floorpattern, checkwalladj3(maze, x, y)+rand.Intn(4), maze.floorcolor)
+			adj := 0
+			if maze.wallpattern < 11 {
+				adj = checkwalladj3(maze, x, y)
+			}
+
+			stamp := floorGetStamp(maze.floorpattern, adj+rand.Intn(4), maze.floorcolor)
 			writestamptoimage(img, stamp, x*16+16, y*16+16)
 		}
 	}
@@ -164,7 +169,7 @@ func genpfimage(maze *Maze) {
 				stamp.pnum = 0
 			case MAZEOBJ_WALL_DESTRUCTABLE:
 				adj := checkwalladj8(maze, x, y)
-				stamp = wallGetStamp(5, adj, maze.wallcolor)
+				stamp = wallGetDestructableStamp(maze.wallpattern, adj, maze.wallcolor)
 			case MAZEOBJ_WALL_SECRET:
 				adj := checkwalladj8(maze, x, y)
 				stamp = wallGetStamp(maze.wallpattern, adj, maze.wallcolor)
