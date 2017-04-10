@@ -22,6 +22,8 @@ type Stamp struct {
 	ptype   string
 	pnum    int
 	trans0  bool
+	nudgex  int
+	nudgey  int
 }
 
 func check(e error) {

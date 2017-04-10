@@ -313,7 +313,7 @@ func genpfimage(maze *Maze) {
 			}
 
 			if stamp != nil {
-				writestamptoimage(img, stamp, x*16+16, y*16+16)
+				writestamptoimage(img, stamp, x*16+16+stamp.nudgex, y*16+16+stamp.nudgey)
 			}
 
 			if dots != 0 {

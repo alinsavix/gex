@@ -43,42 +43,48 @@ var itemStamps = map[string]Stamp{
 		numbers: tilerange(0x963, 9),
 		ptype:   "base",
 		pnum:    1,
-		trans0:  true,
+		trans0:  true, nudgex: -4,
+		nudgey: -4,
 	},
 	"ifood1": Stamp{
 		width:   3,
 		numbers: tilerange(0x96c, 9),
 		ptype:   "base",
 		pnum:    1,
-		trans0:  true,
+		trans0:  true, nudgex: -4,
+		nudgey: -4,
 	},
 	"ifood2": Stamp{
 		width:   3,
 		numbers: tilerange(0x975, 9),
 		ptype:   "base",
 		pnum:    1,
-		trans0:  true,
+		trans0:  true, nudgex: -4,
+		nudgey: -4,
 	},
 	"ifood3": Stamp{
 		width:   3,
 		numbers: tilerange(0x97e, 9),
 		ptype:   "base",
 		pnum:    1,
-		trans0:  true,
+		trans0:  true, nudgex: -4,
+		nudgey: -4,
 	},
 	"mfood": Stamp{
 		width:   3,
 		numbers: tilerange(0x277b, 9),
 		ptype:   "base",
 		pnum:    1,
-		trans0:  true,
+		trans0:  true, nudgex: -4,
+		nudgey: -4,
 	},
 	"pfood": Stamp{
 		width:   3,
 		numbers: tilerange(0x25ed, 9),
 		ptype:   "base",
 		pnum:    1,
-		trans0:  true,
+		trans0:  true, nudgex: -4,
+		nudgey: -4,
 	},
 
 	"potion": Stamp{
@@ -151,7 +157,8 @@ var itemStamps = map[string]Stamp{
 		numbers: tilerange(0x1700, 9),
 		ptype:   "base",
 		pnum:    1,
-		trans0:  true,
+		trans0:  true, nudgex: -4,
+		nudgey: -4,
 	},
 	"transportability": Stamp{
 		width:   2,
@@ -194,7 +201,8 @@ var itemStamps = map[string]Stamp{
 		numbers: tilerange(0x20f6, 6),
 		ptype:   "base",
 		pnum:    1,
-		trans0:  true,
+		trans0:  true, nudgex: -4,
+		nudgey: -4,
 	},
 
 	"treasure": Stamp{
@@ -202,24 +210,26 @@ var itemStamps = map[string]Stamp{
 		numbers: tilerange(0x987, 9),
 		ptype:   "base",
 		pnum:    1,
-		trans0:  true,
+		trans0:  true, nudgex: -4,
+		nudgey: -4,
 	},
 	"treasurelocked": Stamp{
 		width:   3,
 		numbers: tilerange(0x25e4, 9),
 		ptype:   "base",
 		pnum:    1,
-		trans0:  true,
+		trans0:  true, nudgex: -4,
+		nudgey: -4,
 	},
 	"goldbag": Stamp{
 		width:   3,
 		numbers: tilerange(0x9a2, 9),
 		ptype:   "base",
 		pnum:    1,
-		trans0:  true,
+		trans0:  true, nudgex: -4,
+		nudgey: -4,
 	},
 
-	// FIXME: wrong palette
 	"tport": Stamp{
 		width:   2,
 		numbers: tilerange(0x49e, 4),
@@ -228,8 +238,7 @@ var itemStamps = map[string]Stamp{
 		trans0:  true,
 	},
 
-	// FIXME: wrong palette
-	// FIXME: also missing all the various directions
+	// FIXME: missing all the various directions
 	"ff": Stamp{
 		width:   2,
 		numbers: tilerange(0x4a2, 4),
@@ -304,6 +313,8 @@ var itemStamps = map[string]Stamp{
 		ptype:   "base",
 		pnum:    5,
 		trans0:  true,
+		nudgex:  -4,
+		nudgey:  -4,
 	},
 	"generator2": Stamp{
 		width:   3,
@@ -311,6 +322,8 @@ var itemStamps = map[string]Stamp{
 		ptype:   "base",
 		pnum:    5,
 		trans0:  true,
+		nudgex:  -4,
+		nudgey:  -4,
 	},
 	"generator3": Stamp{
 		width:   3,
@@ -318,6 +331,8 @@ var itemStamps = map[string]Stamp{
 		ptype:   "base",
 		pnum:    5,
 		trans0:  true,
+		nudgex:  -4,
+		nudgey:  -4,
 	},
 	"ghostgen1": Stamp{
 		width:   3,
@@ -325,6 +340,8 @@ var itemStamps = map[string]Stamp{
 		ptype:   "base",
 		pnum:    5,
 		trans0:  true,
+		nudgex:  -4,
+		nudgey:  -4,
 	},
 	"ghostgen2": Stamp{
 		width:   3,
@@ -332,6 +349,8 @@ var itemStamps = map[string]Stamp{
 		ptype:   "base",
 		pnum:    5,
 		trans0:  true,
+		nudgex:  -4,
+		nudgey:  -4,
 	},
 	"ghostgen3": Stamp{
 		width:   3,
@@ -339,6 +358,8 @@ var itemStamps = map[string]Stamp{
 		ptype:   "base",
 		pnum:    5,
 		trans0:  true,
+		nudgex:  -4,
+		nudgey:  -4,
 	},
 
 	"ghost": Stamp{
@@ -347,6 +368,8 @@ var itemStamps = map[string]Stamp{
 		ptype:   "base",
 		pnum:    4,
 		trans0:  true,
+		nudgex:  -4,
+		nudgey:  -4,
 	},
 	"grunt": Stamp{
 		width:   3,
@@ -354,6 +377,8 @@ var itemStamps = map[string]Stamp{
 		ptype:   "base",
 		pnum:    4,
 		trans0:  true,
+		nudgex:  -4,
+		nudgey:  -4,
 	},
 	"demon": Stamp{
 		width:   3,
@@ -361,6 +386,8 @@ var itemStamps = map[string]Stamp{
 		ptype:   "base",
 		pnum:    8,
 		trans0:  true,
+		nudgex:  -4,
+		nudgey:  -4,
 	},
 	"lobber": Stamp{
 		width:   3,
@@ -368,6 +395,8 @@ var itemStamps = map[string]Stamp{
 		ptype:   "base",
 		pnum:    11,
 		trans0:  true,
+		nudgex:  -4,
+		nudgey:  -4,
 	},
 	"sorcerer": Stamp{
 		width:   3,
@@ -375,6 +404,8 @@ var itemStamps = map[string]Stamp{
 		ptype:   "base",
 		pnum:    11,
 		trans0:  true,
+		nudgex:  -4,
+		nudgey:  -4,
 	},
 	"auxgrunt": Stamp{
 		width:   3,
@@ -382,6 +413,8 @@ var itemStamps = map[string]Stamp{
 		ptype:   "base",
 		pnum:    4,
 		trans0:  true,
+		nudgex:  -4,
+		nudgey:  -4,
 	},
 	"death": Stamp{
 		width:   3,
@@ -389,6 +422,8 @@ var itemStamps = map[string]Stamp{
 		ptype:   "base",
 		pnum:    0,
 		trans0:  true,
+		nudgex:  -4,
+		nudgey:  -4,
 	},
 	"acid": Stamp{
 		width:   3,
@@ -396,6 +431,8 @@ var itemStamps = map[string]Stamp{
 		ptype:   "base",
 		pnum:    1,
 		trans0:  true,
+		nudgex:  -4,
+		nudgey:  -4,
 	},
 	"supersorc": Stamp{
 		width:   3,
@@ -403,6 +440,8 @@ var itemStamps = map[string]Stamp{
 		ptype:   "base",
 		pnum:    11,
 		trans0:  true,
+		nudgex:  -4,
+		nudgey:  -4,
 	},
 	"it": Stamp{
 		width:   3,
@@ -410,6 +449,8 @@ var itemStamps = map[string]Stamp{
 		ptype:   "base",
 		pnum:    8,
 		trans0:  true,
+		nudgex:  -4,
+		nudgey:  -4,
 	},
 
 	"arrowleft": Stamp{
