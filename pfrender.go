@@ -106,6 +106,9 @@ func genpfimage(maze *Maze) {
 	// 8 pixels * 2 tiles * 32 stamps, plus extra space on edges
 	img := blankimage(8*2*32+32, 8*2*32+32)
 
+	// Map out where forcefield floor tiles are, so we can lay those down first
+	ffmap := ffMakeMap(maze)
+
 	// mazes will always be the same size, so just use constants
 	// maze := mazeDecompress(mazedata)
 	copyedges(maze)
@@ -119,6 +122,10 @@ func genpfimage(maze *Maze) {
 			}
 
 			stamp := floorGetStamp(maze.floorpattern, adj+rand.Intn(4), maze.floorcolor)
+			if ffmap[xy{x, y}] == true {
+				stamp.ptype = "forcefield"
+				stamp.pnum = 0
+			}
 			writestamptoimage(img, stamp, x*16+16, y*16+16)
 		}
 	}
@@ -444,7 +451,9 @@ func checkdooradj4(maze *Maze, x int, y int) int {
 	return adj
 }
 
-var loopdirs = []xy{
+// Below lies the stuff for figuring out where forcefield ground tiles
+// should go. It's not particularly efficient or elegant, but it works.
+var ffLoopDirs = []xy{
 	xy{0, -1}, // "up"
 	xy{1, 0},  // right
 	xy{0, 1},  // "down"
@@ -457,7 +466,7 @@ func checkffadj4(maze *Maze, x int, y int) int {
 	adj := 0
 	for i := 0; i < 4; i++ {
 		for j := 1; j <= 15; j++ {
-			t := whatis(maze, x+(j*loopdirs[i].x), y+(j*loopdirs[i].y))
+			t := whatis(maze, x+(j*ffLoopDirs[i].x), y+(j*ffLoopDirs[i].y))
 			if j > 1 && isforcefield(t) {
 				adj += adjvalues[i]
 				break
@@ -468,6 +477,48 @@ func checkffadj4(maze *Maze, x int, y int) int {
 	}
 
 	return adj
+}
+
+type FFMap map[xy]bool
+
+func ffMark(ffmap FFMap, maze *Maze, x int, y int, dir int) {
+	for i := 1; ; i++ {
+		d := ffLoopDirs[dir]
+		nx := x + (d.x * i)
+		ny := y + (d.y * i)
+
+		if isforcefield(maze.data[xy{nx, ny}]) {
+			// done with this direction
+			return
+		}
+
+		// mark our map
+		ffmap[xy{nx, ny}] = true
+	}
+
+	return
+}
+
+func ffMakeMap(maze *Maze) FFMap {
+	ffmap := FFMap{}
+
+	for k, v := range maze.data {
+		if !isforcefield(v) {
+			continue
+		}
+
+		// Only check for 'right' or 'down' adjacencies, since up and left
+		// are just the same tiles from the other end
+		adj := checkffadj4(maze, k.x, k.y)
+		if (adj & 0x02) > 0 { // adj to the right
+			ffMark(ffmap, maze, k.x, k.y, 1)
+		}
+		if (adj & 0x04) > 0 { // adj down
+			ffMark(ffmap, maze, k.x, k.y, 2)
+		}
+	}
+
+	return ffmap
 }
 
 func isforcefield(t int) bool {

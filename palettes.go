@@ -1175,19 +1175,41 @@ var shrubPalette = [][]color.Color{
 	},
 }
 
+var forcefieldPalette = [][]color.Color{
+	{
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+		IRGB{0x0},
+	},
+}
+
 var gauntletPalettes = map[string][][]color.Color{
-	"teleff":   teleFfPalettes,
-	"floor":    floorPalettes,
-	"wall":     wallPalettes,
-	"base":     basePalettes,
-	"warrior":  warriorPalettes,
-	"valkyrie": valkyriePalettes,
-	"wizard":   wizardPalettes,
-	"elf":      elfPalettes,
-	"trap":     trapPalette,
-	"stun":     stunPalette,
-	"secret":   secretPalette,
-	"shrub":    shrubPalette,
+	"teleff":     teleFfPalettes,
+	"floor":      floorPalettes,
+	"wall":       wallPalettes,
+	"base":       basePalettes,
+	"warrior":    warriorPalettes,
+	"valkyrie":   valkyriePalettes,
+	"wizard":     wizardPalettes,
+	"elf":        elfPalettes,
+	"trap":       trapPalette,
+	"stun":       stunPalette,
+	"secret":     secretPalette,
+	"shrub":      shrubPalette,
+	"forcefield": forcefieldPalette,
 }
 
 var sColors1 = []int{
@@ -1230,6 +1252,10 @@ func paletteMakeSpecial(floorpattern int, floorcolor int, wallpattern, wallcolor
 	paletteClone(trapPalette[0], floorPalettes[floorcolor])
 	stunPalette[0][sColors1[floorpattern]] = IRGB{0xaaa0}
 	stunPalette[0][sColors2[floorpattern]] = IRGB{0xaaa0}
+
+	paletteClone(forcefieldPalette[0], floorPalettes[floorcolor])
+	forcefieldPalette[0][sColors1[floorpattern]] = IRGB{0xaa00}
+	forcefieldPalette[0][sColors2[floorpattern]] = IRGB{0xda60}
 
 	for i := 0; i < 16; i++ {
 		c := wallPalettes[0][i].(IRGB)
