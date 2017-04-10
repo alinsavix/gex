@@ -391,7 +391,7 @@ var itemStamps = map[string]Stamp{
 	},
 	"lobber": Stamp{
 		width:   3,
-		numbers: tilerange(0x1b57, 9),
+		numbers: tilerange(0x1b57, 6),
 		ptype:   "base",
 		pnum:    11,
 		trans0:  true,
