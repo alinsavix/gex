@@ -305,7 +305,8 @@ func genpfimage(maze *Maze) {
 				stamp = itemGetStamp("ipotion")
 
 			case MAZEOBJ_FORCEFIELDHUB:
-				stamp = itemGetStamp("ff")
+				adj := checkffadj4(maze, x, y)
+				stamp = ffGetStamp(adj)
 			case MAZEOBJ_TRANSPORTER:
 				stamp = itemGetStamp("tport")
 			default:
@@ -441,6 +442,40 @@ func checkdooradj4(maze *Maze, x int, y int) int {
 	}
 
 	return adj
+}
+
+var loopdirs = []xy{
+	xy{0, -1}, // "up"
+	xy{1, 0},  // right
+	xy{0, 1},  // "down"
+	xy{-1, 0}, // left
+}
+
+var adjvalues = []int{0x01, 0x02, 0x04, 0x08}
+
+func checkffadj4(maze *Maze, x int, y int) int {
+	adj := 0
+	for i := 0; i < 4; i++ {
+		for j := 1; j <= 15; j++ {
+			t := whatis(maze, x+(j*loopdirs[i].x), y+(j*loopdirs[i].y))
+			if j > 1 && isforcefield(t) {
+				adj += adjvalues[i]
+				break
+			} else if iswall(t) {
+				break
+			}
+		}
+	}
+
+	return adj
+}
+
+func isforcefield(t int) bool {
+	if t == MAZEOBJ_FORCEFIELDHUB {
+		return true
+	} else {
+		return false
+	}
 }
 
 func dotat(img *image.NRGBA, xloc int, yloc int) {
