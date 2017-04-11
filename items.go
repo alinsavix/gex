@@ -306,6 +306,8 @@ var itemStamps = map[string]Stamp{
 		ptype:   "base",
 		pnum:    8, // or 7 or 6
 		trans0:  true,
+		nudgex:  0,
+		nudgey:  -16, // because we're rendering the maze "upside-down" (I think)
 	},
 	"generator1": Stamp{
 		width:   3,
