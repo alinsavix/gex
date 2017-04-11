@@ -1249,7 +1249,7 @@ func paletteMakeSpecial(floorpattern int, floorcolor int, wallpattern, wallcolor
 	// for i := 0; i < 16; i++ {
 	// 	stunPalette[0][i] = floorPalettes[floorcolor][i]
 	// }
-	paletteClone(trapPalette[0], floorPalettes[floorcolor])
+	paletteClone(stunPalette[0], floorPalettes[floorcolor])
 	stunPalette[0][sColors1[floorpattern]] = IRGB{0xaaa0}
 	stunPalette[0][sColors2[floorpattern]] = IRGB{0xaaa0}
 
