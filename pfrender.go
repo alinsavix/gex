@@ -203,6 +203,8 @@ func genpfimage(maze *Maze) {
 			case MAZEOBJ_WALL_REGULAR:
 				adj := checkwalladj8(maze, x, y)
 				stamp = wallGetStamp(maze.wallpattern, adj, maze.wallcolor)
+			case MAZEOBJ_WALL_MOVABLE:
+				stamp = itemGetStamp("pushwall")
 			case MAZEOBJ_KEY:
 				stamp = itemGetStamp("key")
 
