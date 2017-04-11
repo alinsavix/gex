@@ -1,0 +1,6 @@
+Maze number: 23
+  Encoded length: 229 bytes
+  Wall pattern: 02, Wall color: 11     Floor pattern: 04, Floor color: 14
+  Flags: WRAP_H WALLS_CYCLIC 
+  Random food adds: 0
+  Secret trick:  3 - Try Transportability (into exit)

@@ -1,0 +1,6 @@
+Maze number: 17
+  Encoded length: 191 bytes
+  Wall pattern: 03, Wall color: 15     Floor pattern: 03, Floor color: 02
+  Flags: WRAP_H 
+  Random food adds: 3
+  Secret trick:  4 - Try Transportability (onto secret wall)

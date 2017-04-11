@@ -1,0 +1,6 @@
+Maze number: 70
+  Encoded length: 359 bytes
+  Wall pattern: 00, Wall color: 14     Floor pattern: 05, Floor color: 09
+  Flags: WRAP_H 
+  Random food adds: 0
+  Secret trick:  6 - Watch What You Shoot (shoot secret walls)

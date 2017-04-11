@@ -1,0 +1,6 @@
+Maze number: 9
+  Encoded length: 125 bytes
+  Wall pattern: 00, Wall color: 02     Floor pattern: 05, Floor color: 07
+  Flags: 
+  Random food adds: 0
+  Secret trick:  3 - Try Transportability (into exit)

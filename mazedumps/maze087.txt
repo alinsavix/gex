@@ -1,0 +1,6 @@
+Maze number: 87
+  Encoded length: 314 bytes
+  Wall pattern: 12, Wall color: 06     Floor pattern: 02, Floor color: 12
+  Flags: WRAP_H 
+  Random food adds: 0
+  Secret trick: 16 - IT Could Be Nice

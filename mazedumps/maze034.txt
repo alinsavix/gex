@@ -1,0 +1,6 @@
+Maze number: 34
+  Encoded length: 333 bytes
+  Wall pattern: 03, Wall color: 06     Floor pattern: 03, Floor color: 00
+  Flags: 
+  Random food adds: 0
+  Secret trick:  5 - Watch What You Shoot (shoot foods)

@@ -1,0 +1,6 @@
+Maze number: 22
+  Encoded length: 168 bytes
+  Wall pattern: 01, Wall color: 06     Floor pattern: 01, Floor color: 06
+  Flags: EXIT_CHOOSE_ONE INVIS_ALLWALLS 
+  Random food adds: 1
+  Secret trick:  2 - Try Transportability (onto death)

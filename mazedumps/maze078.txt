@@ -1,0 +1,6 @@
+Maze number: 78
+  Encoded length: 263 bytes
+  Wall pattern: 04, Wall color: 01     Floor pattern: 08, Floor color: 01
+  Flags: FAST_LOBBERS FAST_SORCERERS ODDANGLE_GHOSTS FAST_GRUNTS TRAPS_LOCAL 
+  Random food adds: 0
+  Secret trick:  9 - Don't Get Hit (while killing a dragon)

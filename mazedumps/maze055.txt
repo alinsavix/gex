@@ -1,0 +1,6 @@
+Maze number: 55
+  Encoded length: 153 bytes
+  Wall pattern: 02, Wall color: 08     Floor pattern: 07, Floor color: 03
+  Flags: FAST_GRUNTS FAST_DEMONS 
+  Random food adds: 1
+  Secret trick: 15 - Be Pushy

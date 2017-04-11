@@ -1,0 +1,6 @@
+Maze number: 95
+  Encoded length: 235 bytes
+  Wall pattern: 12, Wall color: 00     Floor pattern: 02, Floor color: 12
+  Flags: WRAP_H SHOTS_STUN TRAPS_RANDOM 
+  Random food adds: 0
+  Secret trick:  2 - Try Transportability (onto death)

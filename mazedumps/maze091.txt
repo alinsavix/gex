@@ -1,0 +1,6 @@
+Maze number: 91
+  Encoded length: 271 bytes
+  Wall pattern: 02, Wall color: 02     Floor pattern: 02, Floor color: 13
+  Flags: FAST_AUX_GRUNTS WALLS_CYCLIC 
+  Random food adds: 0
+  Secret trick: 10 - Try Pushing a Wall

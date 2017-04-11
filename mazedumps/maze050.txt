@@ -1,0 +1,6 @@
+Maze number: 50
+  Encoded length: 244 bytes
+  Wall pattern: 04, Wall color: 09     Floor pattern: 06, Floor color: 06
+  Flags: WRAP_H 
+  Random food adds: 0
+  Secret trick: 16 - IT Could Be Nice

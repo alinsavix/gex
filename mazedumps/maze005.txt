@@ -1,0 +1,6 @@
+Maze number: 5
+  Encoded length: 137 bytes
+  Wall pattern: 00, Wall color: 00     Floor pattern: 04, Floor color: 05
+  Flags: INVIS_ALLWALLS 
+  Random food adds: 0
+  Secret trick:  6 - Watch What You Shoot (shoot secret walls)

@@ -1,0 +1,6 @@
+Maze number: 53
+  Encoded length: 235 bytes
+  Wall pattern: 02, Wall color: 11     Floor pattern: 04, Floor color: 10
+  Flags: ODDANGLE_GRUNTS 
+  Random food adds: 0
+  Secret trick: 17 - Don't Hurt Friends

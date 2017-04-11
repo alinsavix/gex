@@ -1,0 +1,6 @@
+Maze number: 46
+  Encoded length: 286 bytes
+  Wall pattern: 04, Wall color: 09     Floor pattern: 03, Floor color: 13
+  Flags: FAST_SORCERERS ODDANGLE_DEATHS ODDANGLE_GHOSTS FAST_GHOSTS ODDANGLE_GRUNTS 
+  Random food adds: 0
+  Secret trick: 16 - IT Could Be Nice

@@ -1,0 +1,6 @@
+Maze number: 20
+  Encoded length: 243 bytes
+  Wall pattern: 01, Wall color: 00     Floor pattern: 01, Floor color: 04
+  Flags: WALLS_CYCLIC 
+  Random food adds: 5
+  Secret trick:  7 - Save Super Shots

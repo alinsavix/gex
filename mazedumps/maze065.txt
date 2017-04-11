@@ -1,0 +1,6 @@
+Maze number: 65
+  Encoded length: 238 bytes
+  Wall pattern: 04, Wall color: 00     Floor pattern: 04, Floor color: 07
+  Flags: 
+  Random food adds: 0
+  Secret trick:  2 - Try Transportability (onto death)

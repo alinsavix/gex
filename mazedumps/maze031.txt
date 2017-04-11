@@ -1,0 +1,6 @@
+Maze number: 31
+  Encoded length: 374 bytes
+  Wall pattern: 04, Wall color: 01     Floor pattern: 07, Floor color: 09
+  Flags: TRAPS_LOCAL 
+  Random food adds: 0
+  Secret trick: 17 - Don't Hurt Friends

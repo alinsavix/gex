@@ -1,0 +1,6 @@
+Maze number: 39
+  Encoded length: 217 bytes
+  Wall pattern: 04, Wall color: 00     Floor pattern: 06, Floor color: 15
+  Flags: EXIT_FAKE EXIT_CHOOSE_ONE FAST_DEMONS SHOTS_HURT 
+  Random food adds: 4
+  Secret trick: 11 - Don't Be Fooled

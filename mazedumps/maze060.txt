@@ -1,0 +1,6 @@
+Maze number: 60
+  Encoded length: 301 bytes
+  Wall pattern: 01, Wall color: 12     Floor pattern: 07, Floor color: 02
+  Flags: EXIT_FAKE EXIT_CHOOSE_ONE FAST_SORCERERS 
+  Random food adds: 0
+  Secret trick: 11 - Don't Be Fooled

@@ -1,0 +1,6 @@
+Maze number: 40
+  Encoded length: 295 bytes
+  Wall pattern: 02, Wall color: 03     Floor pattern: 00, Floor color: 15
+  Flags: EXIT_CHOOSE_ONE WRAP_H 
+  Random food adds: 0
+  Secret trick: 10 - Try Pushing a Wall
