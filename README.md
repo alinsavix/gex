@@ -19,5 +19,6 @@ Some commands you could try:
 Current limitations:
 * You can't specify arbitrary tile numbers to render
 * Rendering animations doesn't work (most of the code is there, but I switched to png, which doesn't support animations)
+* Anims also don't work because I haven't loaded the data required for it. I really should read it from the ROMs, though.
 * You can't tell what monsters a given generator creates when dumping a maze
 * Some of the code is still quite crap
