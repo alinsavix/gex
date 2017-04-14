@@ -1,7 +1,7 @@
 package main
 
-import (
-	"os"
+const (
+	CODE_ROM_START = 0x040000
 )
 
 var codeRoms = [][]string{
@@ -35,7 +35,7 @@ var codeRomSets = []Romset{
 }
 
 func coderomGetByAddr(addr int) ([]string, int) {
-	a := addr - 0x040000
+	a := addr - CODE_ROM_START
 	bank := a / 0x8000
 	rs := codeRomSets[bank]
 	offset := a%0x8000 + rs.offset
@@ -43,21 +43,6 @@ func coderomGetByAddr(addr int) ([]string, int) {
 	return rs.roms, offset
 }
 
-var rf [2]*os.File // Open rom files
-
-const (
-	ROM_START = 0x040000
-)
-
-// func coderomGetRomOffset(addr int) (int, int) {
-// 	addr -= ROM_START
-// 	romnum := addr / 0x010000
-// 	offset := addr - (romnum * 0x010000)
-
-// 	return romnum, offset
-// }
-
-// FIXME: Consolidate with slapsticReadBytes
 func coderomGetBytes(addr int, count int) []byte {
 	rompair, offset := coderomGetByAddr(addr)
 	buf := romSplitRead(rompair, offset, count) // FIXME: Standardize arg order
