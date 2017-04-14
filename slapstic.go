@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/binary"
-	"io"
 	"os"
 )
 
@@ -74,43 +73,10 @@ func slapsticReadMazeOffset(mazenum int) int {
 
 // Read bytes from combined ROM. Only works if reading an even address
 func slapsticReadBytes(offset int, count int) []byte {
-	f, err := os.Open(slapsticRoms[0])
-	check(err)
-	sf[0] = f
-	defer sf[0].Close()
-
-	f, err = os.Open(slapsticRoms[1])
-	check(err)
-	sf[1] = f
-	defer sf[1].Close()
-
 	if offset >= SLAPSTIC_START {
 		offset -= SLAPSTIC_START
 	}
-
-	// fmt.Printf("offset to load is: %06x\n", offset)
-
-	sf[0].Seek(int64(offset/2), 0)
-	sf[1].Seek(int64(offset/2), 0)
-
-	var buf []byte
-	var b = make([]byte, 1)
-
-	for i := 0; i < count; i++ {
-		// If we're starting on an odd byte, make it look like we've
-		// already read an even one.
-		if (i == 0) && (offset%2 > 0) {
-			sf[0].Read(b)
-			i++
-			count++
-		}
-		s, err := sf[i%2].Read(b)
-		if s == 0 && err == io.EOF {
-			break
-		}
-		check(err)
-		buf = append(buf, b[0])
-	}
+	buf := romSplitRead(slapsticRoms, offset, count)
 
 	return buf
 }
