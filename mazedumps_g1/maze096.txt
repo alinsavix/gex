@@ -1,4 +1,5 @@
 Maze number: 96
+Loading maze from addr: 03efae
   Encoded length: 187 bytes
   Wall pattern: 00, Wall color: 00     Floor pattern: 00, Floor color: 00
   Flags: EXIT_CHOOSE_ONE 

@@ -1,4 +1,5 @@
 Maze number: 28
+Loading maze from addr: 039e32
   Encoded length: 225 bytes
   Wall pattern: 01, Wall color: 14     Floor pattern: 02, Floor color: 13
   Flags: 

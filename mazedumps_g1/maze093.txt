@@ -1,4 +1,5 @@
 Maze number: 93
+Loading maze from addr: 03ecb8
   Encoded length: 272 bytes
   Wall pattern: 03, Wall color: 02     Floor pattern: 03, Floor color: 01
   Flags: 

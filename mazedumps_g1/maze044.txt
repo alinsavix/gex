@@ -1,4 +1,5 @@
 Maze number: 44
+Loading maze from addr: 03ac23
   Encoded length: 386 bytes
   Wall pattern: 02, Wall color: 01     Floor pattern: 06, Floor color: 09
   Flags: 

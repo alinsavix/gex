@@ -1,4 +1,5 @@
 Maze number: 6
+Loading maze from addr: 038571
   Encoded length:  93 bytes
   Wall pattern: 00, Wall color: 01     Floor pattern: 01, Floor color: 02
   Flags: 

@@ -1,7 +1,7 @@
 Maze number: 107
-WARNING: Read end of maze datastream before maze full.
-  Encoded length: 328 bytes
-  Wall pattern: 00, Wall color: 02     Floor pattern: 04, Floor color: 04
-  Flags: EXIT_FAKE PLAYER_OFFSCREEN 
+Loading maze from addr: 03d509
+  Encoded length: 152 bytes
+  Wall pattern: 02, Wall color: 15     Floor pattern: 05, Floor color: 06
+  Flags: 
   Random food adds: 0
   Secret trick:  0 - No trick

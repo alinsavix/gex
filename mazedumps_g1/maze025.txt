@@ -1,4 +1,5 @@
 Maze number: 25
+Loading maze from addr: 039ae4
   Encoded length: 274 bytes
   Wall pattern: 00, Wall color: 00     Floor pattern: 08, Floor color: 05
   Flags: 

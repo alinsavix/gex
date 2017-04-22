@@ -1,7 +1,7 @@
 Maze number: 67
-WARNING: Read end of maze datastream before maze full.
-  Encoded length:  60 bytes
-  Wall pattern: 00, Wall color: 03     Floor pattern: 02, Floor color: 12
-  Flags: EXIT_FAKE EXIT_CHOOSE_ONE SHOTS_HURT PLAYER_OFFSCREEN 
+Loading maze from addr: 03bbd9
+  Encoded length: 265 bytes
+  Wall pattern: 00, Wall color: 00     Floor pattern: 03, Floor color: 04
+  Flags: 
   Random food adds: 0
   Secret trick:  0 - No trick
