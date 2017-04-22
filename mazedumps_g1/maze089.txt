@@ -1,0 +1,7 @@
+Maze number: 89
+WARNING: Read end of maze datastream before maze full.
+  Encoded length:  18 bytes
+  Wall pattern: 00, Wall color: 00     Floor pattern: 08, Floor color: 00
+  Flags: TRAPS_LOCAL WRAP_V WRAP_H SHOTS_HURT TRAPS_RANDOM 
+  Random food adds: 0
+  Secret trick:  0 - No trick

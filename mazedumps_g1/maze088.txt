@@ -1,0 +1,6 @@
+Maze number: 88
+  Encoded length: 179 bytes
+  Wall pattern: 02, Wall color: 13     Floor pattern: 00, Floor color: 04
+  Flags: SHOTS_HURT 
+  Random food adds: 0
+  Secret trick:  0 - No trick

@@ -1,0 +1,6 @@
+Maze number: 98
+  Encoded length: 205 bytes
+  Wall pattern: 03, Wall color: 11     Floor pattern: 03, Floor color: 13
+  Flags: WRAP_H TRAPS_RANDOM 
+  Random food adds: 0
+  Secret trick:  0 - No trick

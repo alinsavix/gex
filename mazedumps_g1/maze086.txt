@@ -1,0 +1,6 @@
+Maze number: 86
+  Encoded length: 127 bytes
+  Wall pattern: 01, Wall color: 07     Floor pattern: 03, Floor color: 01
+  Flags: SHOTS_STUN 
+  Random food adds: 0
+  Secret trick:  0 - No trick
